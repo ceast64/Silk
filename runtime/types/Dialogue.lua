@@ -1,4 +1,5 @@
 --!strict
+--!nolint ImportUnused
 
 local YarnProgram = require(script.Parent:WaitForChild("YarnProgram"))
 
@@ -17,7 +18,7 @@ export type Line = {
 	substitutions: { string },
 }
 
---- @type YarnFunction (...YarnProgram.Operand) -> ...YarnProgram.Operand
+--- @type YarnFunction (...Operand) -> ...Operand
 --- @within Dialogue
 ---
 --- A function that can be called by Yarn code.
