@@ -29,7 +29,7 @@ jobs:
 
       - name: Install Moonwave
         id: install-moonwave
-        run: npm -i moonwave
+        run: npm install moonwave
 
       - name: Build site
         run: moonwave build --code runtime --out-dir ./build
