@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="generator" content="Docusaurus v2.0.1">
 <title data-rh="true">Dialogue | YarnSpinnerRbx</title><meta data-rh="true" name="twitter:card" content="summary_large_image"><meta data-rh="true" property="og:url" content="https://ceast64.github.io/YarnSpinnerRbx/api/Dialogue"><meta data-rh="true" name="docusaurus_locale" content="en"><meta data-rh="true" name="docusaurus_tag" content="default"><meta data-rh="true" name="docsearch:language" content="en"><meta data-rh="true" name="docsearch:docusaurus_tag" content="default"><meta data-rh="true" property="og:title" content="Dialogue | YarnSpinnerRbx"><meta data-rh="true" name="description" content="Dialogue class used for executing a Yarn script."><meta data-rh="true" property="og:description" content="Dialogue class used for executing a Yarn script."><link data-rh="true" rel="canonical" href="https://ceast64.github.io/YarnSpinnerRbx/api/Dialogue"><link data-rh="true" rel="alternate" href="https://ceast64.github.io/YarnSpinnerRbx/api/Dialogue" hreflang="en"><link data-rh="true" rel="alternate" href="https://ceast64.github.io/YarnSpinnerRbx/api/Dialogue" hreflang="x-default"><link rel="stylesheet" href="/YarnSpinnerRbx/assets/css/styles.77d02042.css">
-<link rel="preload" href="/YarnSpinnerRbx/assets/js/runtime~main.22fa9598.js" as="script">
-<link rel="preload" href="/YarnSpinnerRbx/assets/js/main.69cf16b2.js" as="script">
+<link rel="preload" href="/YarnSpinnerRbx/assets/js/runtime~main.8c42e39f.js" as="script">
+<link rel="preload" href="/YarnSpinnerRbx/assets/js/main.0bcce3f1.js" as="script">
 </head>
 <body class="navigation-with-keyboard">
 <script>!function(){function e(e){document.documentElement.setAttribute("data-theme",e)}var t=function(){var e=null;try{e=localStorage.getItem("theme")}catch(e){}return e}();null!==t?e(t):window.matchMedia("(prefers-color-scheme: dark)").matches?e("dark"):(window.matchMedia("(prefers-color-scheme: light)").matches,e("light"))}()</script><div id="__docusaurus">
@@ -58,40 +58,42 @@
   </div>
 </div>
 <p>This method may be called any number of times during a dialogue session.</p>
-</div><h2 class="anchor anchorWithStickyNavbar_LWe7" id="properties">Properties<a class="hash-link" href="#properties" title="Direct link to heading">​</a></h2><div class="divider_rE5g"></div><h3 class="anchor anchorWithStickyNavbar_LWe7" id="DefaultStartNodeName"><code style="text-decoration:none">DefaultStartNodeName</code><a class="hash-link" href="#DefaultStartNodeName" title="Direct link to heading">​</a></h3><div class="repositoryDetailsContainer_BPdw"><a class="sourceButton_sEho" href="https://github.com/ceast64/YarnSpinnerRbx/blob/main/runtime/Dialogue.lua#L42"><div class="sourceButtonText_Vh0m">&lt;/&gt;</div></a></div><div class="memberString_GwaU"><code>Dialogue<!-- -->.<!-- -->DefaultStartNodeName<!-- -->:<!-- --> </code> <code class="blue_P4bS">string</code></div><div>
+</div><h2 class="anchor anchorWithStickyNavbar_LWe7" id="properties">Properties<a class="hash-link" href="#properties" title="Direct link to heading">​</a></h2><div class="divider_rE5g"></div><h3 class="anchor anchorWithStickyNavbar_LWe7" id="DefaultStartNodeName"><code style="text-decoration:none">DefaultStartNodeName</code><a class="hash-link" href="#DefaultStartNodeName" title="Direct link to heading">​</a></h3><div class="repositoryDetailsContainer_BPdw"><a class="sourceButton_sEho" href="https://github.com/ceast64/YarnSpinnerRbx/blob/main/runtime/Dialogue.lua#L44"><div class="sourceButtonText_Vh0m">&lt;/&gt;</div></a></div><div class="memberString_GwaU"><code>Dialogue<!-- -->.<!-- -->DefaultStartNodeName<!-- -->:<!-- --> </code> <code class="blue_P4bS">string</code></div><div>
 <p>The node that execution will start from.</p>
-</div><div class="divider_rE5g"></div><h3 class="anchor anchorWithStickyNavbar_LWe7" id="VariableStorage"><code style="text-decoration:none">VariableStorage</code><a class="hash-link" href="#VariableStorage" title="Direct link to heading">​</a></h3><div class="repositoryDetailsContainer_BPdw"><a class="sourceButton_sEho" href="https://github.com/ceast64/YarnSpinnerRbx/blob/main/runtime/Dialogue.lua#L47"><div class="sourceButtonText_Vh0m">&lt;/&gt;</div></a></div><div class="memberString_GwaU"><code>Dialogue<!-- -->.<!-- -->VariableStorage<!-- -->:<!-- --> </code> <code class="purple_ieR2">{</code><span><code>[</code><code class="blue_P4bS">string</code><code>]</code></span><code>: </code><code class="blue_P4bS">YarnProgram.Operand</code><code class="purple_ieR2">}</code></div><div>
+</div><div class="divider_rE5g"></div><h3 class="anchor anchorWithStickyNavbar_LWe7" id="VariableStorage"><code style="text-decoration:none">VariableStorage</code><a class="hash-link" href="#VariableStorage" title="Direct link to heading">​</a></h3><div class="repositoryDetailsContainer_BPdw"><a class="sourceButton_sEho" href="https://github.com/ceast64/YarnSpinnerRbx/blob/main/runtime/Dialogue.lua#L49"><div class="sourceButtonText_Vh0m">&lt;/&gt;</div></a></div><div class="memberString_GwaU"><code>Dialogue<!-- -->.<!-- -->VariableStorage<!-- -->:<!-- --> </code> <code class="purple_ieR2">{</code><span><code>[</code><code class="blue_P4bS">string</code><code>]</code></span><code>: </code><code class="blue_P4bS"><a style="text-decoration:underline;color:inherit" href="/YarnSpinnerRbx/api/YarnProgram#Operand">Operand</a></code><code class="purple_ieR2">}</code></div><div>
 <p>The dictionary that provides access to the values of variables in use by this Dialogue.</p>
-</div><div class="divider_rE5g"></div><h3 class="anchor anchorWithStickyNavbar_LWe7" id="IsActive"><code style="text-decoration:none">IsActive</code><a class="hash-link" href="#IsActive" title="Direct link to heading">​</a></h3><div class="repositoryDetailsContainer_BPdw"><a class="sourceButton_sEho" href="https://github.com/ceast64/YarnSpinnerRbx/blob/main/runtime/Dialogue.lua#L52"><div class="sourceButtonText_Vh0m">&lt;/&gt;</div></a></div><div class="memberString_GwaU"><code>Dialogue<!-- -->.<!-- -->IsActive<!-- -->:<!-- --> </code> <code class="blue_P4bS">boolean</code></div><div>
+</div><div class="divider_rE5g"></div><h3 class="anchor anchorWithStickyNavbar_LWe7" id="IsActive"><code style="text-decoration:none">IsActive</code><a class="hash-link" href="#IsActive" title="Direct link to heading">​</a></h3><div class="repositoryDetailsContainer_BPdw"><a class="sourceButton_sEho" href="https://github.com/ceast64/YarnSpinnerRbx/blob/main/runtime/Dialogue.lua#L54"><div class="sourceButtonText_Vh0m">&lt;/&gt;</div></a></div><div class="memberString_GwaU"><code>Dialogue<!-- -->.<!-- -->IsActive<!-- -->:<!-- --> </code> <code class="blue_P4bS">boolean</code></div><div>
 <p>A value indicating whether the Dialogue is currently executing Yarn instructions.</p>
-</div><div class="divider_rE5g"></div><h3 class="anchor anchorWithStickyNavbar_LWe7" id="Library"><code style="text-decoration:none">Library</code><a class="hash-link" href="#Library" title="Direct link to heading">​</a></h3><div class="repositoryDetailsContainer_BPdw"><a class="sourceButton_sEho" href="https://github.com/ceast64/YarnSpinnerRbx/blob/main/runtime/Dialogue.lua#L57"><div class="sourceButtonText_Vh0m">&lt;/&gt;</div></a></div><div class="memberString_GwaU"><code>Dialogue<!-- -->.<!-- -->Library<!-- -->:<!-- --> </code> <code class="purple_ieR2">{</code><span><code>[</code><code class="blue_P4bS">string</code><code>]</code></span><code>: </code><code class="blue_P4bS"><a style="text-decoration:underline;color:inherit" href="/YarnSpinnerRbx/api/Dialogue#YarnFunction">YarnFunction</a></code><code class="purple_ieR2">}</code></div><div>
+</div><div class="divider_rE5g"></div><h3 class="anchor anchorWithStickyNavbar_LWe7" id="Library"><code style="text-decoration:none">Library</code><a class="hash-link" href="#Library" title="Direct link to heading">​</a></h3><div class="repositoryDetailsContainer_BPdw"><a class="sourceButton_sEho" href="https://github.com/ceast64/YarnSpinnerRbx/blob/main/runtime/Dialogue.lua#L59"><div class="sourceButtonText_Vh0m">&lt;/&gt;</div></a></div><div class="memberString_GwaU"><code>Dialogue<!-- -->.<!-- -->Library<!-- -->:<!-- --> </code> <code class="purple_ieR2">{</code><span><code>[</code><code class="blue_P4bS">string</code><code>]</code></span><code>: </code><code class="blue_P4bS"><a style="text-decoration:underline;color:inherit" href="/YarnSpinnerRbx/api/Dialogue#YarnFunction">YarnFunction</a></code><code class="purple_ieR2">}</code></div><div>
 <p>The "library" of functions this Dialogue's Yarn code has access to.</p>
-</div><div class="divider_rE5g"></div><h3 class="anchor anchorWithStickyNavbar_LWe7" id="CurrentNode"><code style="text-decoration:none">CurrentNode</code><a class="hash-link" href="#CurrentNode" title="Direct link to heading">​</a></h3><div class="repositoryDetailsContainer_BPdw"><a class="sourceButton_sEho" href="https://github.com/ceast64/YarnSpinnerRbx/blob/main/runtime/Dialogue.lua#L62"><div class="sourceButtonText_Vh0m">&lt;/&gt;</div></a></div><div class="memberString_GwaU"><code>Dialogue<!-- -->.<!-- -->CurrentNode<!-- -->:<!-- --> </code> <code class="blue_P4bS">string</code></div><div>
+</div><div class="divider_rE5g"></div><h3 class="anchor anchorWithStickyNavbar_LWe7" id="CurrentNode"><code style="text-decoration:none">CurrentNode</code><a class="hash-link" href="#CurrentNode" title="Direct link to heading">​</a></h3><div class="repositoryDetailsContainer_BPdw"><a class="sourceButton_sEho" href="https://github.com/ceast64/YarnSpinnerRbx/blob/main/runtime/Dialogue.lua#L64"><div class="sourceButtonText_Vh0m">&lt;/&gt;</div></a></div><div class="memberString_GwaU"><code>Dialogue<!-- -->.<!-- -->CurrentNode<!-- -->:<!-- --> </code> <code class="blue_P4bS">string</code></div><div>
 <p>The name of the current Node being executed.</p>
-</div><div class="divider_rE5g"></div><h3 class="anchor anchorWithStickyNavbar_LWe7" id="NodeNames"><code style="text-decoration:none">NodeNames</code><a class="hash-link" href="#NodeNames" title="Direct link to heading">​</a></h3><div class="repositoryDetailsContainer_BPdw"><a class="sourceButton_sEho" href="https://github.com/ceast64/YarnSpinnerRbx/blob/main/runtime/Dialogue.lua#L67"><div class="sourceButtonText_Vh0m">&lt;/&gt;</div></a></div><div class="memberString_GwaU"><code>Dialogue<!-- -->.<!-- -->NodeNames<!-- -->:<!-- --> </code> <code class="purple_ieR2">{</code><code class="blue_P4bS">string</code><code class="purple_ieR2">}</code></div><div>
+</div><div class="divider_rE5g"></div><h3 class="anchor anchorWithStickyNavbar_LWe7" id="NodeNames"><code style="text-decoration:none">NodeNames</code><a class="hash-link" href="#NodeNames" title="Direct link to heading">​</a></h3><div class="repositoryDetailsContainer_BPdw"><a class="sourceButton_sEho" href="https://github.com/ceast64/YarnSpinnerRbx/blob/main/runtime/Dialogue.lua#L69"><div class="sourceButtonText_Vh0m">&lt;/&gt;</div></a></div><div class="memberString_GwaU"><code>Dialogue<!-- -->.<!-- -->NodeNames<!-- -->:<!-- --> </code> <code class="purple_ieR2">{</code><code class="blue_P4bS">string</code><code class="purple_ieR2">}</code></div><div>
 <p>The names of all Nodes loaded in this Dialogue.</p>
-</div><div class="divider_rE5g"></div><h3 class="anchor anchorWithStickyNavbar_LWe7" id="OnOptions"><code style="text-decoration:none">OnOptions</code><a class="hash-link" href="#OnOptions" title="Direct link to heading">​</a></h3><span class="docTag__6UZ" style="border-color:#ff5252;color:#ff5252">callbacks</span><div class="repositoryDetailsContainer_BPdw"><a class="sourceButton_sEho" href="https://github.com/ceast64/YarnSpinnerRbx/blob/main/runtime/Dialogue.lua#L73"><div class="sourceButtonText_Vh0m">&lt;/&gt;</div></a></div><div class="memberString_GwaU"><code>Dialogue<!-- -->.<!-- -->OnOptions<!-- -->:<!-- --> </code> <code class="blue_P4bS"><a style="text-decoration:underline;color:inherit" href="/YarnSpinnerRbx/api/Dialogue#OptionsHandler">OptionsHandler?</a></code></div><div>
+</div><div class="divider_rE5g"></div><h3 class="anchor anchorWithStickyNavbar_LWe7" id="Program"><code style="text-decoration:none">Program</code><a class="hash-link" href="#Program" title="Direct link to heading">​</a></h3><div class="repositoryDetailsContainer_BPdw"><a class="sourceButton_sEho" href="https://github.com/ceast64/YarnSpinnerRbx/blob/main/runtime/Dialogue.lua#L74"><div class="sourceButtonText_Vh0m">&lt;/&gt;</div></a></div><div class="memberString_GwaU"><code>Dialogue<!-- -->.<!-- -->Program<!-- -->:<!-- --> </code> <code class="blue_P4bS"><a style="text-decoration:underline;color:inherit" href="/YarnSpinnerRbx/api/YarnProgram#YarnProgram">YarnProgram?</a></code></div><div>
+<p>The program being executed by this Dialogue.</p>
+</div><div class="divider_rE5g"></div><h3 class="anchor anchorWithStickyNavbar_LWe7" id="OnOptions"><code style="text-decoration:none">OnOptions</code><a class="hash-link" href="#OnOptions" title="Direct link to heading">​</a></h3><span class="docTag__6UZ" style="border-color:#ff5252;color:#ff5252">callbacks</span><div class="repositoryDetailsContainer_BPdw"><a class="sourceButton_sEho" href="https://github.com/ceast64/YarnSpinnerRbx/blob/main/runtime/Dialogue.lua#L80"><div class="sourceButtonText_Vh0m">&lt;/&gt;</div></a></div><div class="memberString_GwaU"><code>Dialogue<!-- -->.<!-- -->OnOptions<!-- -->:<!-- --> </code> <code class="blue_P4bS"><a style="text-decoration:underline;color:inherit" href="/YarnSpinnerRbx/api/Dialogue#OptionsHandler">OptionsHandler?</a></code></div><div>
 <p>Called when the Dialogue has options to deliver to the user.</p>
-</div><div class="divider_rE5g"></div><h3 class="anchor anchorWithStickyNavbar_LWe7" id="OnCommand"><code style="text-decoration:none">OnCommand</code><a class="hash-link" href="#OnCommand" title="Direct link to heading">​</a></h3><span class="docTag__6UZ" style="border-color:#ff5252;color:#ff5252">callbacks</span><div class="repositoryDetailsContainer_BPdw"><a class="sourceButton_sEho" href="https://github.com/ceast64/YarnSpinnerRbx/blob/main/runtime/Dialogue.lua#L79"><div class="sourceButtonText_Vh0m">&lt;/&gt;</div></a></div><div class="memberString_GwaU"><code>Dialogue<!-- -->.<!-- -->OnCommand<!-- -->:<!-- --> </code> <code class="blue_P4bS"><a style="text-decoration:underline;color:inherit" href="/YarnSpinnerRbx/api/Dialogue#CommandHandler">CommandHandler?</a></code></div><div>
+</div><div class="divider_rE5g"></div><h3 class="anchor anchorWithStickyNavbar_LWe7" id="OnCommand"><code style="text-decoration:none">OnCommand</code><a class="hash-link" href="#OnCommand" title="Direct link to heading">​</a></h3><span class="docTag__6UZ" style="border-color:#ff5252;color:#ff5252">callbacks</span><div class="repositoryDetailsContainer_BPdw"><a class="sourceButton_sEho" href="https://github.com/ceast64/YarnSpinnerRbx/blob/main/runtime/Dialogue.lua#L86"><div class="sourceButtonText_Vh0m">&lt;/&gt;</div></a></div><div class="memberString_GwaU"><code>Dialogue<!-- -->.<!-- -->OnCommand<!-- -->:<!-- --> </code> <code class="blue_P4bS"><a style="text-decoration:underline;color:inherit" href="/YarnSpinnerRbx/api/Dialogue#CommandHandler">CommandHandler?</a></code></div><div>
 <p>Called when the Dialogue has a command to execute.</p>
-</div><div class="divider_rE5g"></div><h3 class="anchor anchorWithStickyNavbar_LWe7" id="OnDialogueComplete"><code style="text-decoration:none">OnDialogueComplete</code><a class="hash-link" href="#OnDialogueComplete" title="Direct link to heading">​</a></h3><span class="docTag__6UZ" style="border-color:#ff5252;color:#ff5252">callbacks</span><div class="repositoryDetailsContainer_BPdw"><a class="sourceButton_sEho" href="https://github.com/ceast64/YarnSpinnerRbx/blob/main/runtime/Dialogue.lua#L85"><div class="sourceButtonText_Vh0m">&lt;/&gt;</div></a></div><div class="memberString_GwaU"><code>Dialogue<!-- -->.<!-- -->OnDialogueComplete<!-- -->:<!-- --> </code> <code class="blue_P4bS"><a style="text-decoration:underline;color:inherit" href="/YarnSpinnerRbx/api/Dialogue#DialogueCompleteHandler">DialogueCompleteHandler?</a></code></div><div>
+</div><div class="divider_rE5g"></div><h3 class="anchor anchorWithStickyNavbar_LWe7" id="OnDialogueComplete"><code style="text-decoration:none">OnDialogueComplete</code><a class="hash-link" href="#OnDialogueComplete" title="Direct link to heading">​</a></h3><span class="docTag__6UZ" style="border-color:#ff5252;color:#ff5252">callbacks</span><div class="repositoryDetailsContainer_BPdw"><a class="sourceButton_sEho" href="https://github.com/ceast64/YarnSpinnerRbx/blob/main/runtime/Dialogue.lua#L92"><div class="sourceButtonText_Vh0m">&lt;/&gt;</div></a></div><div class="memberString_GwaU"><code>Dialogue<!-- -->.<!-- -->OnDialogueComplete<!-- -->:<!-- --> </code> <code class="blue_P4bS"><a style="text-decoration:underline;color:inherit" href="/YarnSpinnerRbx/api/Dialogue#DialogueCompleteHandler">DialogueCompleteHandler?</a></code></div><div>
 <p>Called when the Dialogue has no more code left to execute.</p>
-</div><div class="divider_rE5g"></div><h3 class="anchor anchorWithStickyNavbar_LWe7" id="OnLine"><code style="text-decoration:none">OnLine</code><a class="hash-link" href="#OnLine" title="Direct link to heading">​</a></h3><span class="docTag__6UZ" style="border-color:#ff5252;color:#ff5252">callbacks</span><div class="repositoryDetailsContainer_BPdw"><a class="sourceButton_sEho" href="https://github.com/ceast64/YarnSpinnerRbx/blob/main/runtime/Dialogue.lua#L91"><div class="sourceButtonText_Vh0m">&lt;/&gt;</div></a></div><div class="memberString_GwaU"><code>Dialogue<!-- -->.<!-- -->OnLine<!-- -->:<!-- --> </code> <code class="blue_P4bS"><a style="text-decoration:underline;color:inherit" href="/YarnSpinnerRbx/api/Dialogue#LineHandler">LineHandler?</a></code></div><div>
+</div><div class="divider_rE5g"></div><h3 class="anchor anchorWithStickyNavbar_LWe7" id="OnLine"><code style="text-decoration:none">OnLine</code><a class="hash-link" href="#OnLine" title="Direct link to heading">​</a></h3><span class="docTag__6UZ" style="border-color:#ff5252;color:#ff5252">callbacks</span><div class="repositoryDetailsContainer_BPdw"><a class="sourceButton_sEho" href="https://github.com/ceast64/YarnSpinnerRbx/blob/main/runtime/Dialogue.lua#L98"><div class="sourceButtonText_Vh0m">&lt;/&gt;</div></a></div><div class="memberString_GwaU"><code>Dialogue<!-- -->.<!-- -->OnLine<!-- -->:<!-- --> </code> <code class="blue_P4bS"><a style="text-decoration:underline;color:inherit" href="/YarnSpinnerRbx/api/Dialogue#LineHandler">LineHandler?</a></code></div><div>
 <p>Called when the Dialogue delivers a line to the game.</p>
-</div><div class="divider_rE5g"></div><h3 class="anchor anchorWithStickyNavbar_LWe7" id="OnNodeComplete"><code style="text-decoration:none">OnNodeComplete</code><a class="hash-link" href="#OnNodeComplete" title="Direct link to heading">​</a></h3><span class="docTag__6UZ" style="border-color:#ff5252;color:#ff5252">callbacks</span><div class="repositoryDetailsContainer_BPdw"><a class="sourceButton_sEho" href="https://github.com/ceast64/YarnSpinnerRbx/blob/main/runtime/Dialogue.lua#L97"><div class="sourceButtonText_Vh0m">&lt;/&gt;</div></a></div><div class="memberString_GwaU"><code>Dialogue<!-- -->.<!-- -->OnNodeComplete<!-- -->:<!-- --> </code> <code class="blue_P4bS"><a style="text-decoration:underline;color:inherit" href="/YarnSpinnerRbx/api/Dialogue#NodeCompleteHandler">NodeCompleteHandler?</a></code></div><div>
+</div><div class="divider_rE5g"></div><h3 class="anchor anchorWithStickyNavbar_LWe7" id="OnNodeComplete"><code style="text-decoration:none">OnNodeComplete</code><a class="hash-link" href="#OnNodeComplete" title="Direct link to heading">​</a></h3><span class="docTag__6UZ" style="border-color:#ff5252;color:#ff5252">callbacks</span><div class="repositoryDetailsContainer_BPdw"><a class="sourceButton_sEho" href="https://github.com/ceast64/YarnSpinnerRbx/blob/main/runtime/Dialogue.lua#L104"><div class="sourceButtonText_Vh0m">&lt;/&gt;</div></a></div><div class="memberString_GwaU"><code>Dialogue<!-- -->.<!-- -->OnNodeComplete<!-- -->:<!-- --> </code> <code class="blue_P4bS"><a style="text-decoration:underline;color:inherit" href="/YarnSpinnerRbx/api/Dialogue#NodeCompleteHandler">NodeCompleteHandler?</a></code></div><div>
 <p>Called when the Dialogue has reached the end of a Node.</p>
-</div><div class="divider_rE5g"></div><h3 class="anchor anchorWithStickyNavbar_LWe7" id="OnNodeStart"><code style="text-decoration:none">OnNodeStart</code><a class="hash-link" href="#OnNodeStart" title="Direct link to heading">​</a></h3><span class="docTag__6UZ" style="border-color:#ff5252;color:#ff5252">callbacks</span><div class="repositoryDetailsContainer_BPdw"><a class="sourceButton_sEho" href="https://github.com/ceast64/YarnSpinnerRbx/blob/main/runtime/Dialogue.lua#L103"><div class="sourceButtonText_Vh0m">&lt;/&gt;</div></a></div><div class="memberString_GwaU"><code>Dialogue<!-- -->.<!-- -->OnNodeStart<!-- -->:<!-- --> </code> <code class="blue_P4bS"><a style="text-decoration:underline;color:inherit" href="/YarnSpinnerRbx/api/Dialogue#NodeStartHandler">NodeStartHandler?</a></code></div><div>
+</div><div class="divider_rE5g"></div><h3 class="anchor anchorWithStickyNavbar_LWe7" id="OnNodeStart"><code style="text-decoration:none">OnNodeStart</code><a class="hash-link" href="#OnNodeStart" title="Direct link to heading">​</a></h3><span class="docTag__6UZ" style="border-color:#ff5252;color:#ff5252">callbacks</span><div class="repositoryDetailsContainer_BPdw"><a class="sourceButton_sEho" href="https://github.com/ceast64/YarnSpinnerRbx/blob/main/runtime/Dialogue.lua#L110"><div class="sourceButtonText_Vh0m">&lt;/&gt;</div></a></div><div class="memberString_GwaU"><code>Dialogue<!-- -->.<!-- -->OnNodeStart<!-- -->:<!-- --> </code> <code class="blue_P4bS"><a style="text-decoration:underline;color:inherit" href="/YarnSpinnerRbx/api/Dialogue#NodeStartHandler">NodeStartHandler?</a></code></div><div>
 <p>Called when the Dialogue starts executing a Node.</p>
-</div><div class="divider_rE5g"></div><h3 class="anchor anchorWithStickyNavbar_LWe7" id="OnPrepareForLines"><code style="text-decoration:none">OnPrepareForLines</code><a class="hash-link" href="#OnPrepareForLines" title="Direct link to heading">​</a></h3><span class="docTag__6UZ" style="border-color:#ff5252;color:#ff5252">callbacks</span><div class="repositoryDetailsContainer_BPdw"><a class="sourceButton_sEho" href="https://github.com/ceast64/YarnSpinnerRbx/blob/main/runtime/Dialogue.lua#L110"><div class="sourceButtonText_Vh0m">&lt;/&gt;</div></a></div><div class="memberString_GwaU"><code>Dialogue<!-- -->.<!-- -->OnPrepareForLines<!-- -->:<!-- --> </code> <code class="blue_P4bS"><a style="text-decoration:underline;color:inherit" href="/YarnSpinnerRbx/api/Dialogue#PrepareForLinesHandler">PrepareForLinesHandler?</a></code></div><div>
+</div><div class="divider_rE5g"></div><h3 class="anchor anchorWithStickyNavbar_LWe7" id="OnPrepareForLines"><code style="text-decoration:none">OnPrepareForLines</code><a class="hash-link" href="#OnPrepareForLines" title="Direct link to heading">​</a></h3><span class="docTag__6UZ" style="border-color:#ff5252;color:#ff5252">callbacks</span><div class="repositoryDetailsContainer_BPdw"><a class="sourceButton_sEho" href="https://github.com/ceast64/YarnSpinnerRbx/blob/main/runtime/Dialogue.lua#L117"><div class="sourceButtonText_Vh0m">&lt;/&gt;</div></a></div><div class="memberString_GwaU"><code>Dialogue<!-- -->.<!-- -->OnPrepareForLines<!-- -->:<!-- --> </code> <code class="blue_P4bS"><a style="text-decoration:underline;color:inherit" href="/YarnSpinnerRbx/api/Dialogue#PrepareForLinesHandler">PrepareForLinesHandler?</a></code></div><div>
 <p>
   Called when the Dialogue anticipates that lines will be delivered soon.
   <a href="Dialogue#PrepareForLinesHandler">See for more info.</a>
 </p>
-</div><h2 class="anchor anchorWithStickyNavbar_LWe7" id="functions">Functions<a class="hash-link" href="#functions" title="Direct link to heading">​</a></h2><div class="divider_rE5g"></div><h3 class="anchor anchorWithStickyNavbar_LWe7" id="AddProgram"><code style="text-decoration:none">AddProgram</code><a class="hash-link" href="#AddProgram" title="Direct link to heading">​</a></h3><div class="repositoryDetailsContainer_BPdw"><a class="sourceButton_sEho" href="https://github.com/ceast64/YarnSpinnerRbx/blob/main/runtime/Dialogue.lua#L115"><div class="sourceButtonText_Vh0m">&lt;/&gt;</div></a></div><div class="memberString_GwaU"><code>Dialogue<!-- -->.</code><code class="green_DgR4">AddProgram</code><code>(</code><div class="inset_uKQm"><div><code>self<!-- -->: </code><code class="blue_P4bS"><a style="text-decoration:underline;color:inherit" href="/YarnSpinnerRbx/api/Dialogue">Dialogue</a></code><code>,</code></div><div><code>program<!-- -->: </code><code class="blue_P4bS"><a style="text-decoration:underline;color:inherit" href="/YarnSpinnerRbx/api/YarnProgram#YarnProgram">YarnProgram</a></code><span class="inlineDescription_G7Er">-- <span>
-<p>Program with nodes to add</p>
+</div><h2 class="anchor anchorWithStickyNavbar_LWe7" id="functions">Functions<a class="hash-link" href="#functions" title="Direct link to heading">​</a></h2><div class="divider_rE5g"></div><h3 class="anchor anchorWithStickyNavbar_LWe7" id="AddProgram"><code style="text-decoration:none">AddProgram</code><a class="hash-link" href="#AddProgram" title="Direct link to heading">​</a></h3><div class="repositoryDetailsContainer_BPdw"><a class="sourceButton_sEho" href="https://github.com/ceast64/YarnSpinnerRbx/blob/main/runtime/Dialogue.lua#L122"><div class="sourceButtonText_Vh0m">&lt;/&gt;</div></a></div><div class="memberString_GwaU"><code>Dialogue<!-- -->.</code><code class="green_DgR4">AddProgram</code><code>(</code><div class="inset_uKQm"><div><code>self<!-- -->: </code><code class="blue_P4bS"><a style="text-decoration:underline;color:inherit" href="/YarnSpinnerRbx/api/Dialogue">Dialogue</a></code><code>,</code></div><div><code>program<!-- -->: </code><code class="blue_P4bS"><a style="text-decoration:underline;color:inherit" href="/YarnSpinnerRbx/api/YarnProgram#YarnProgram">YarnProgram</a></code><span class="inlineDescription_G7Er">-- <span>
+<p>The additional Program to load.</p>
 </span></span></div></div><code>) → </code><code>(</code><code>)</code></div><div>
-<p>Add the nodes from a Program to this Dialogue</p>
-</div><div class="divider_rE5g"></div><h3 class="anchor anchorWithStickyNavbar_LWe7" id="Continue"><code style="text-decoration:none">Continue</code><a class="hash-link" href="#Continue" title="Direct link to heading">​</a></h3><div class="repositoryDetailsContainer_BPdw"><a class="sourceButton_sEho" href="https://github.com/ceast64/YarnSpinnerRbx/blob/main/runtime/Dialogue.lua#L129"><div class="sourceButtonText_Vh0m">&lt;/&gt;</div></a></div><div class="memberString_GwaU"><code>Dialogue<!-- -->.</code><code class="green_DgR4">Continue</code><code>(</code><code>self<!-- -->: </code><code class="blue_P4bS"><a style="text-decoration:underline;color:inherit" href="/YarnSpinnerRbx/api/Dialogue">Dialogue</a></code><code>) → </code><code>(</code><code>)</code></div><div>
+<p>Loads the nodes from the specified Program, and adds them to the nodes already loaded.</p>
+</div><div class="divider_rE5g"></div><h3 class="anchor anchorWithStickyNavbar_LWe7" id="Continue"><code style="text-decoration:none">Continue</code><a class="hash-link" href="#Continue" title="Direct link to heading">​</a></h3><div class="repositoryDetailsContainer_BPdw"><a class="sourceButton_sEho" href="https://github.com/ceast64/YarnSpinnerRbx/blob/main/runtime/Dialogue.lua#L136"><div class="sourceButtonText_Vh0m">&lt;/&gt;</div></a></div><div class="memberString_GwaU"><code>Dialogue<!-- -->.</code><code class="green_DgR4">Continue</code><code>(</code><code>self<!-- -->: </code><code class="blue_P4bS"><a style="text-decoration:underline;color:inherit" href="/YarnSpinnerRbx/api/Dialogue">Dialogue</a></code><code>) → </code><code>(</code><code>)</code></div><div>
 <p>
   Starts or continues execution of the current Program.
   This method repeatedly executes instructions until one of the following conditions is encountered:
@@ -112,11 +114,43 @@
     This method has no effect if it is called while the Dialogue is currently in the process of executing instructions.
   </li>
 </ul>
+</div><div class="divider_rE5g"></div><h3 class="anchor anchorWithStickyNavbar_LWe7" id="ExpandSubstitutions"><code style="text-decoration:none">ExpandSubstitutions</code><a class="hash-link" href="#ExpandSubstitutions" title="Direct link to heading">​</a></h3><div class="repositoryDetailsContainer_BPdw"><a class="sourceButton_sEho" href="https://github.com/ceast64/YarnSpinnerRbx/blob/main/runtime/Dialogue.lua#L151"><div class="sourceButtonText_Vh0m">&lt;/&gt;</div></a></div><div class="memberString_GwaU"><code>Dialogue<!-- -->.</code><code class="green_DgR4">ExpandSubstitutions</code><code>(</code><div class="inset_uKQm"><div><code>self<!-- -->: </code><code class="blue_P4bS"><a style="text-decoration:underline;color:inherit" href="/YarnSpinnerRbx/api/Dialogue">Dialogue</a></code><code>,</code></div><div><code>text<!-- -->: </code><code class="blue_P4bS">string</code><code>,</code><span class="inlineDescription_G7Er">-- <span>
+<p>The text containing substitution markers</p>
+</span></span></div><div><code>substitutions<!-- -->: </code><code class="purple_ieR2">{</code><code class="blue_P4bS">string</code><code class="purple_ieR2">}</code><span class="inlineDescription_G7Er">-- <span>
+<p>The list of substitutions</p>
+</span></span></div></div><code>) → </code><code class="blue_P4bS">string</code><span class="inlineDescription_G7Er">-- <span>
+<p><code>text</code>, with the content from <code>substitutions</code> inserted.</p>
+</span></span></div><div>
+<p>
+  Replaces all substitution markers in a text with the given substitution list.
+  This method replaces substitution markers - for example, <code>{0}</code> - with the
+  corresponding entry in <code>substitutions</code>.
+  If <code>text</code> contains a substitution marker whose index is not present in <code>substitutions</code>,
+  it is ignored.
+</p>
+</div><div class="divider_rE5g"></div><h3 class="anchor anchorWithStickyNavbar_LWe7" id="GetTagsForNode"><code style="text-decoration:none">GetTagsForNode</code><a class="hash-link" href="#GetTagsForNode" title="Direct link to heading">​</a></h3><div class="repositoryDetailsContainer_BPdw"><a class="sourceButton_sEho" href="https://github.com/ceast64/YarnSpinnerRbx/blob/main/runtime/Dialogue.lua#L166"><div class="sourceButtonText_Vh0m">&lt;/&gt;</div></a></div><div class="memberString_GwaU"><code>Dialogue<!-- -->.</code><code class="green_DgR4">GetTagsForNode</code><code>(</code><div class="inset_uKQm"><div><code>self<!-- -->: </code><code class="blue_P4bS"><a style="text-decoration:underline;color:inherit" href="/YarnSpinnerRbx/api/Dialogue">Dialogue</a></code><code>,</code></div><div><code>nodeName<!-- -->: </code><code class="blue_P4bS">string</code><span class="inlineDescription_G7Er">-- <span>
+<p>The name of the node</p>
+</span></span></div></div><code>) → </code><code class="purple_ieR2">{</code><code class="blue_P4bS">string</code><code class="purple_ieR2">}</code><code class="blue_P4bS">?</code><span class="inlineDescription_G7Er">-- <span>
+<p>The node's tag, or <code>nil</code> if the node is not present in the Program</p>
+</span></span></div><div>
+<p>
+  Returns the tags for the node <code>nodeName</code>.
+  The tags for a node are defined by setting the <code>tags</code> header in
+  the node's source code. This header must be a space-separated list.
+</p>
+</div><div class="divider_rE5g"></div><h3 class="anchor anchorWithStickyNavbar_LWe7" id="Stop"><code style="text-decoration:none">Stop</code><a class="hash-link" href="#Stop" title="Direct link to heading">​</a></h3><div class="repositoryDetailsContainer_BPdw"><a class="sourceButton_sEho" href="https://github.com/ceast64/YarnSpinnerRbx/blob/main/runtime/Dialogue.lua#L188"><div class="sourceButtonText_Vh0m">&lt;/&gt;</div></a></div><div class="memberString_GwaU"><code>Dialogue<!-- -->.</code><code class="green_DgR4">Stop</code><code>(</code><code>self<!-- -->: </code><code class="blue_P4bS"><a style="text-decoration:underline;color:inherit" href="/YarnSpinnerRbx/api/Dialogue">Dialogue</a></code><code>) → </code><code>(</code><code>)</code></div><div>
+<p>
+  Immediately stops the <code>Dialogue</code>.
+  The <a href="Dialogue#OnDialogueComplete">DialogueCompleteHandler</a> will not
+  be called if the dialogue is ended by calling <a href="Dialogue#Stop">Stop</a>.
+</p>
+</div><div class="divider_rE5g"></div><h3 class="anchor anchorWithStickyNavbar_LWe7" id="UnloadAll"><code style="text-decoration:none">UnloadAll</code><a class="hash-link" href="#UnloadAll" title="Direct link to heading">​</a></h3><div class="repositoryDetailsContainer_BPdw"><a class="sourceButton_sEho" href="https://github.com/ceast64/YarnSpinnerRbx/blob/main/runtime/Dialogue.lua#L194"><div class="sourceButtonText_Vh0m">&lt;/&gt;</div></a></div><div class="memberString_GwaU"><code>Dialogue<!-- -->.</code><code class="green_DgR4">UnloadAll</code><code>(</code><code>self<!-- -->: </code><code class="blue_P4bS"><a style="text-decoration:underline;color:inherit" href="/YarnSpinnerRbx/api/Dialogue">Dialogue</a></code><code>) → </code><code>(</code><code>)</code></div><div>
+<p>Unloads all nodes from the <code>Dialogue</code>.</p>
 </div></div></article></div><details><summary>Show raw api</summary><pre style="max-width:100%;white-space:pre-wrap">{
     &quot;functions&quot;: [
         {
             &quot;name&quot;: &quot;AddProgram&quot;,
-            &quot;desc&quot;: &quot;Add the nodes from a Program to this Dialogue&quot;,
+            &quot;desc&quot;: &quot;Loads the nodes from the specified Program, and adds them to the nodes already loaded.&quot;,
             &quot;params&quot;: [
                 {
                     &quot;name&quot;: &quot;self&quot;,
@@ -125,14 +159,14 @@
                 },
                 {
                     &quot;name&quot;: &quot;program&quot;,
-                    &quot;desc&quot;: &quot;Program with nodes to add&quot;,
+                    &quot;desc&quot;: &quot;The additional Program to load.&quot;,
                     &quot;lua_type&quot;: &quot;YarnProgram&quot;
                 }
             ],
             &quot;returns&quot;: [],
             &quot;function_type&quot;: &quot;static&quot;,
             &quot;source&quot;: {
-                &quot;line&quot;: 115,
+                &quot;line&quot;: 122,
                 &quot;path&quot;: &quot;runtime/Dialogue.lua&quot;
             }
         },
@@ -149,7 +183,100 @@
             &quot;returns&quot;: [],
             &quot;function_type&quot;: &quot;static&quot;,
             &quot;source&quot;: {
-                &quot;line&quot;: 129,
+                &quot;line&quot;: 136,
+                &quot;path&quot;: &quot;runtime/Dialogue.lua&quot;
+            }
+        },
+        {
+            &quot;name&quot;: &quot;ExpandSubstitutions&quot;,
+            &quot;desc&quot;: &quot;Replaces all substitution markers in a text with the given substitution list.\nThis method replaces substitution markers - for example, `{0}` - with the\ncorresponding entry in `substitutions`.\nIf `text` contains a substitution marker whose index is not present in `substitutions`,\nit is ignored.&quot;,
+            &quot;params&quot;: [
+                {
+                    &quot;name&quot;: &quot;self&quot;,
+                    &quot;desc&quot;: &quot;&quot;,
+                    &quot;lua_type&quot;: &quot;Dialogue&quot;
+                },
+                {
+                    &quot;name&quot;: &quot;text&quot;,
+                    &quot;desc&quot;: &quot;The text containing substitution markers&quot;,
+                    &quot;lua_type&quot;: &quot;string&quot;
+                },
+                {
+                    &quot;name&quot;: &quot;substitutions&quot;,
+                    &quot;desc&quot;: &quot;The list of substitutions&quot;,
+                    &quot;lua_type&quot;: &quot;{ string }&quot;
+                }
+            ],
+            &quot;returns&quot;: [
+                {
+                    &quot;desc&quot;: &quot;`text`, with the content from `substitutions` inserted.&quot;,
+                    &quot;lua_type&quot;: &quot;string&quot;
+                }
+            ],
+            &quot;function_type&quot;: &quot;static&quot;,
+            &quot;source&quot;: {
+                &quot;line&quot;: 151,
+                &quot;path&quot;: &quot;runtime/Dialogue.lua&quot;
+            }
+        },
+        {
+            &quot;name&quot;: &quot;GetTagsForNode&quot;,
+            &quot;desc&quot;: &quot;Returns the tags for the node `nodeName`.\nThe tags for a node are defined by setting the `tags` header in\nthe node&#x27;s source code. This header must be a space-separated list.&quot;,
+            &quot;params&quot;: [
+                {
+                    &quot;name&quot;: &quot;self&quot;,
+                    &quot;desc&quot;: &quot;&quot;,
+                    &quot;lua_type&quot;: &quot;Dialogue&quot;
+                },
+                {
+                    &quot;name&quot;: &quot;nodeName&quot;,
+                    &quot;desc&quot;: &quot;The name of the node&quot;,
+                    &quot;lua_type&quot;: &quot;string&quot;
+                }
+            ],
+            &quot;returns&quot;: [
+                {
+                    &quot;desc&quot;: &quot;The node&#x27;s tag, or `nil` if the node is not present in the Program&quot;,
+                    &quot;lua_type&quot;: &quot;{ string }?&quot;
+                }
+            ],
+            &quot;function_type&quot;: &quot;static&quot;,
+            &quot;source&quot;: {
+                &quot;line&quot;: 166,
+                &quot;path&quot;: &quot;runtime/Dialogue.lua&quot;
+            }
+        },
+        {
+            &quot;name&quot;: &quot;Stop&quot;,
+            &quot;desc&quot;: &quot;Immediately stops the `Dialogue`.\nThe [DialogueCompleteHandler](Dialogue#OnDialogueComplete) will not\nbe called if the dialogue is ended by calling [Stop](Dialogue#Stop).&quot;,
+            &quot;params&quot;: [
+                {
+                    &quot;name&quot;: &quot;self&quot;,
+                    &quot;desc&quot;: &quot;&quot;,
+                    &quot;lua_type&quot;: &quot;Dialogue&quot;
+                }
+            ],
+            &quot;returns&quot;: [],
+            &quot;function_type&quot;: &quot;static&quot;,
+            &quot;source&quot;: {
+                &quot;line&quot;: 188,
+                &quot;path&quot;: &quot;runtime/Dialogue.lua&quot;
+            }
+        },
+        {
+            &quot;name&quot;: &quot;UnloadAll&quot;,
+            &quot;desc&quot;: &quot;Unloads all nodes from the `Dialogue`.&quot;,
+            &quot;params&quot;: [
+                {
+                    &quot;name&quot;: &quot;self&quot;,
+                    &quot;desc&quot;: &quot;&quot;,
+                    &quot;lua_type&quot;: &quot;Dialogue&quot;
+                }
+            ],
+            &quot;returns&quot;: [],
+            &quot;function_type&quot;: &quot;static&quot;,
+            &quot;source&quot;: {
+                &quot;line&quot;: 194,
                 &quot;path&quot;: &quot;runtime/Dialogue.lua&quot;
             }
         }
@@ -160,16 +287,16 @@
             &quot;desc&quot;: &quot;The node that execution will start from.&quot;,
             &quot;lua_type&quot;: &quot;string&quot;,
             &quot;source&quot;: {
-                &quot;line&quot;: 42,
+                &quot;line&quot;: 44,
                 &quot;path&quot;: &quot;runtime/Dialogue.lua&quot;
             }
         },
         {
             &quot;name&quot;: &quot;VariableStorage&quot;,
             &quot;desc&quot;: &quot;The dictionary that provides access to the values of variables in use by this Dialogue.&quot;,
-            &quot;lua_type&quot;: &quot;{ [string]: YarnProgram.Operand }&quot;,
+            &quot;lua_type&quot;: &quot;{ [string]: Operand }&quot;,
             &quot;source&quot;: {
-                &quot;line&quot;: 47,
+                &quot;line&quot;: 49,
                 &quot;path&quot;: &quot;runtime/Dialogue.lua&quot;
             }
         },
@@ -178,7 +305,7 @@
             &quot;desc&quot;: &quot;A value indicating whether the Dialogue is currently executing Yarn instructions.&quot;,
             &quot;lua_type&quot;: &quot;boolean&quot;,
             &quot;source&quot;: {
-                &quot;line&quot;: 52,
+                &quot;line&quot;: 54,
                 &quot;path&quot;: &quot;runtime/Dialogue.lua&quot;
             }
         },
@@ -187,7 +314,7 @@
             &quot;desc&quot;: &quot;The \&quot;library\&quot; of functions this Dialogue&#x27;s Yarn code has access to.&quot;,
             &quot;lua_type&quot;: &quot;{ [string]: YarnFunction }&quot;,
             &quot;source&quot;: {
-                &quot;line&quot;: 57,
+                &quot;line&quot;: 59,
                 &quot;path&quot;: &quot;runtime/Dialogue.lua&quot;
             }
         },
@@ -196,7 +323,7 @@
             &quot;desc&quot;: &quot;The name of the current Node being executed.&quot;,
             &quot;lua_type&quot;: &quot;string&quot;,
             &quot;source&quot;: {
-                &quot;line&quot;: 62,
+                &quot;line&quot;: 64,
                 &quot;path&quot;: &quot;runtime/Dialogue.lua&quot;
             }
         },
@@ -205,7 +332,16 @@
             &quot;desc&quot;: &quot;The names of all Nodes loaded in this Dialogue.&quot;,
             &quot;lua_type&quot;: &quot;{ string }&quot;,
             &quot;source&quot;: {
-                &quot;line&quot;: 67,
+                &quot;line&quot;: 69,
+                &quot;path&quot;: &quot;runtime/Dialogue.lua&quot;
+            }
+        },
+        {
+            &quot;name&quot;: &quot;Program&quot;,
+            &quot;desc&quot;: &quot;The program being executed by this Dialogue.&quot;,
+            &quot;lua_type&quot;: &quot;YarnProgram?&quot;,
+            &quot;source&quot;: {
+                &quot;line&quot;: 74,
                 &quot;path&quot;: &quot;runtime/Dialogue.lua&quot;
             }
         },
@@ -217,7 +353,7 @@
                 &quot;callbacks&quot;
             ],
             &quot;source&quot;: {
-                &quot;line&quot;: 73,
+                &quot;line&quot;: 80,
                 &quot;path&quot;: &quot;runtime/Dialogue.lua&quot;
             }
         },
@@ -229,7 +365,7 @@
                 &quot;callbacks&quot;
             ],
             &quot;source&quot;: {
-                &quot;line&quot;: 79,
+                &quot;line&quot;: 86,
                 &quot;path&quot;: &quot;runtime/Dialogue.lua&quot;
             }
         },
@@ -241,7 +377,7 @@
                 &quot;callbacks&quot;
             ],
             &quot;source&quot;: {
-                &quot;line&quot;: 85,
+                &quot;line&quot;: 92,
                 &quot;path&quot;: &quot;runtime/Dialogue.lua&quot;
             }
         },
@@ -253,7 +389,7 @@
                 &quot;callbacks&quot;
             ],
             &quot;source&quot;: {
-                &quot;line&quot;: 91,
+                &quot;line&quot;: 98,
                 &quot;path&quot;: &quot;runtime/Dialogue.lua&quot;
             }
         },
@@ -265,7 +401,7 @@
                 &quot;callbacks&quot;
             ],
             &quot;source&quot;: {
-                &quot;line&quot;: 97,
+                &quot;line&quot;: 104,
                 &quot;path&quot;: &quot;runtime/Dialogue.lua&quot;
             }
         },
@@ -277,7 +413,7 @@
                 &quot;callbacks&quot;
             ],
             &quot;source&quot;: {
-                &quot;line&quot;: 103,
+                &quot;line&quot;: 110,
                 &quot;path&quot;: &quot;runtime/Dialogue.lua&quot;
             }
         },
@@ -289,7 +425,7 @@
                 &quot;callbacks&quot;
             ],
             &quot;source&quot;: {
-                &quot;line&quot;: 110,
+                &quot;line&quot;: 117,
                 &quot;path&quot;: &quot;runtime/Dialogue.lua&quot;
             }
         }
@@ -404,8 +540,8 @@
         &quot;line&quot;: 13,
         &quot;path&quot;: &quot;runtime/Dialogue.lua&quot;
     }
-}</pre></details></div><div class="col col--3"><div class="tableOfContents_bqdL thin-scrollbar"><ul class="table-of-contents table-of-contents__left-border"><li><a href="#types" class="table-of-contents__link toc-highlight">Types</a><ul><li><a href="#handlers" class="table-of-contents__link toc-highlight">Handlers</a><ul><li><a href="#CommandHandler" class="table-of-contents__link toc-highlight">CommandHandler</a></li><li><a href="#DialogueCompleteHandler" class="table-of-contents__link toc-highlight">DialogueCompleteHandler</a></li><li><a href="#LineHandler" class="table-of-contents__link toc-highlight">LineHandler</a></li><li><a href="#NodeCompleteHandler" class="table-of-contents__link toc-highlight">NodeCompleteHandler</a></li><li><a href="#NodeStartHandler" class="table-of-contents__link toc-highlight">NodeStartHandler</a></li><li><a href="#OptionsHandler" class="table-of-contents__link toc-highlight">OptionsHandler</a></li><li><a href="#PrepareForLinesHandler" class="table-of-contents__link toc-highlight">PrepareForLinesHandler</a></li></ul></li><li><a href="#Line" class="table-of-contents__link toc-highlight">Line</a></li><li><a href="#YarnFunction" class="table-of-contents__link toc-highlight">YarnFunction</a></li></ul></li><li><a href="#properties" class="table-of-contents__link toc-highlight">Properties</a><ul><li><a href="#callbacks" class="table-of-contents__link toc-highlight">Callbacks</a><ul><li><a href="#OnCommand" class="table-of-contents__link toc-highlight">OnCommand</a></li><li><a href="#OnDialogueComplete" class="table-of-contents__link toc-highlight">OnDialogueComplete</a></li><li><a href="#OnLine" class="table-of-contents__link toc-highlight">OnLine</a></li><li><a href="#OnNodeComplete" class="table-of-contents__link toc-highlight">OnNodeComplete</a></li><li><a href="#OnNodeStart" class="table-of-contents__link toc-highlight">OnNodeStart</a></li><li><a href="#OnOptions" class="table-of-contents__link toc-highlight">OnOptions</a></li><li><a href="#OnPrepareForLines" class="table-of-contents__link toc-highlight">OnPrepareForLines</a></li></ul></li><li><a href="#CurrentNode" class="table-of-contents__link toc-highlight">CurrentNode</a></li><li><a href="#DefaultStartNodeName" class="table-of-contents__link toc-highlight">DefaultStartNodeName</a></li><li><a href="#IsActive" class="table-of-contents__link toc-highlight">IsActive</a></li><li><a href="#Library" class="table-of-contents__link toc-highlight">Library</a></li><li><a href="#NodeNames" class="table-of-contents__link toc-highlight">NodeNames</a></li><li><a href="#VariableStorage" class="table-of-contents__link toc-highlight">VariableStorage</a></li></ul></li><li><a href="#functions" class="table-of-contents__link toc-highlight">Functions</a><ul><li><a href="#AddProgram" class="table-of-contents__link toc-highlight">.AddProgram</a></li><li><a href="#Continue" class="table-of-contents__link toc-highlight">.Continue</a></li></ul></li></ul></div></div></div></div></main></div></div><footer class="footer footer--dark"><div class="container container-fluid"><div class="footer__bottom text--center"><div class="footer__copyright">Copyright © 2023 ceast64. Built with Moonwave and Docusaurus.</div></div></div></footer></div>
-<script src="/YarnSpinnerRbx/assets/js/runtime~main.22fa9598.js"></script>
-<script src="/YarnSpinnerRbx/assets/js/main.69cf16b2.js"></script>
+}</pre></details></div><div class="col col--3"><div class="tableOfContents_bqdL thin-scrollbar"><ul class="table-of-contents table-of-contents__left-border"><li><a href="#types" class="table-of-contents__link toc-highlight">Types</a><ul><li><a href="#handlers" class="table-of-contents__link toc-highlight">Handlers</a><ul><li><a href="#CommandHandler" class="table-of-contents__link toc-highlight">CommandHandler</a></li><li><a href="#DialogueCompleteHandler" class="table-of-contents__link toc-highlight">DialogueCompleteHandler</a></li><li><a href="#LineHandler" class="table-of-contents__link toc-highlight">LineHandler</a></li><li><a href="#NodeCompleteHandler" class="table-of-contents__link toc-highlight">NodeCompleteHandler</a></li><li><a href="#NodeStartHandler" class="table-of-contents__link toc-highlight">NodeStartHandler</a></li><li><a href="#OptionsHandler" class="table-of-contents__link toc-highlight">OptionsHandler</a></li><li><a href="#PrepareForLinesHandler" class="table-of-contents__link toc-highlight">PrepareForLinesHandler</a></li></ul></li><li><a href="#Line" class="table-of-contents__link toc-highlight">Line</a></li><li><a href="#YarnFunction" class="table-of-contents__link toc-highlight">YarnFunction</a></li></ul></li><li><a href="#properties" class="table-of-contents__link toc-highlight">Properties</a><ul><li><a href="#callbacks" class="table-of-contents__link toc-highlight">Callbacks</a><ul><li><a href="#OnCommand" class="table-of-contents__link toc-highlight">OnCommand</a></li><li><a href="#OnDialogueComplete" class="table-of-contents__link toc-highlight">OnDialogueComplete</a></li><li><a href="#OnLine" class="table-of-contents__link toc-highlight">OnLine</a></li><li><a href="#OnNodeComplete" class="table-of-contents__link toc-highlight">OnNodeComplete</a></li><li><a href="#OnNodeStart" class="table-of-contents__link toc-highlight">OnNodeStart</a></li><li><a href="#OnOptions" class="table-of-contents__link toc-highlight">OnOptions</a></li><li><a href="#OnPrepareForLines" class="table-of-contents__link toc-highlight">OnPrepareForLines</a></li></ul></li><li><a href="#CurrentNode" class="table-of-contents__link toc-highlight">CurrentNode</a></li><li><a href="#DefaultStartNodeName" class="table-of-contents__link toc-highlight">DefaultStartNodeName</a></li><li><a href="#IsActive" class="table-of-contents__link toc-highlight">IsActive</a></li><li><a href="#Library" class="table-of-contents__link toc-highlight">Library</a></li><li><a href="#NodeNames" class="table-of-contents__link toc-highlight">NodeNames</a></li><li><a href="#Program" class="table-of-contents__link toc-highlight">Program</a></li><li><a href="#VariableStorage" class="table-of-contents__link toc-highlight">VariableStorage</a></li></ul></li><li><a href="#functions" class="table-of-contents__link toc-highlight">Functions</a><ul><li><a href="#AddProgram" class="table-of-contents__link toc-highlight">.AddProgram</a></li><li><a href="#Continue" class="table-of-contents__link toc-highlight">.Continue</a></li><li><a href="#ExpandSubstitutions" class="table-of-contents__link toc-highlight">.ExpandSubstitutions</a></li><li><a href="#GetTagsForNode" class="table-of-contents__link toc-highlight">.GetTagsForNode</a></li><li><a href="#Stop" class="table-of-contents__link toc-highlight">.Stop</a></li><li><a href="#UnloadAll" class="table-of-contents__link toc-highlight">.UnloadAll</a></li></ul></li></ul></div></div></div></div></main></div></div><footer class="footer footer--dark"><div class="container container-fluid"><div class="footer__bottom text--center"><div class="footer__copyright">Copyright © 2023 ceast64. Built with Moonwave and Docusaurus.</div></div></div></footer></div>
+<script src="/YarnSpinnerRbx/assets/js/runtime~main.8c42e39f.js"></script>
+<script src="/YarnSpinnerRbx/assets/js/main.0bcce3f1.js"></script>
 </body>
 </html>
