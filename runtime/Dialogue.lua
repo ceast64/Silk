@@ -18,6 +18,8 @@ export type Dialogue = {
 	CurrentNode: string,
 	NodeNames: { string },
 
+	Program: YarnProgram.YarnProgram?,
+
 	OnOptions: DialogueTypes.OptionsHandler?,
 	OnCommand: DialogueTypes.CommandHandler?,
 	OnDialogueComplete: DialogueTypes.DialogueCompleteHandler?,
@@ -40,7 +42,7 @@ export type Dialogue = {
 ---
 --- The node that execution will start from.
 
---- @prop VariableStorage { [string]: YarnProgram.Operand }
+--- @prop VariableStorage { [string]: Operand }
 --- @within Dialogue
 ---
 --- The dictionary that provides access to the values of variables in use by this Dialogue.
@@ -64,6 +66,11 @@ export type Dialogue = {
 --- @within Dialogue
 ---
 --- The names of all Nodes loaded in this Dialogue.
+
+--- @prop Program YarnProgram?
+--- @within Dialogue
+---
+--- The program being executed by this Dialogue.
 
 --- @prop OnOptions OptionsHandler?
 --- @within Dialogue
@@ -108,10 +115,10 @@ export type Dialogue = {
 --- Called when the Dialogue anticipates that lines will be delivered soon.
 --- [See for more info.](Dialogue#PrepareForLinesHandler)
 
---- Add the nodes from a Program to this Dialogue
+--- Loads the nodes from the specified Program, and adds them to the nodes already loaded.
 --- @within Dialogue
 ---
---- @param program YarnProgram -- Program with nodes to add
+--- @param program YarnProgram -- The additional Program to load.
 function Dialogue.AddProgram(self: Dialogue, program: YarnProgram.YarnProgram) end
 
 --- Starts or continues execution of the current Program.
@@ -126,6 +133,66 @@ function Dialogue.AddProgram(self: Dialogue, program: YarnProgram.YarnProgram) e
 --- - The Program reaches its end. When this occurs, `SetNode()` must be called before `Continue()` is called again.
 --- - An error occurs while executing the Program.
 --- This method has no effect if it is called while the Dialogue is currently in the process of executing instructions.
-function Dialogue.Continue(self: Dialogue) end
+function Dialogue.Continue(self: Dialogue)
+	-- TODO: start execution in VM
+end
+
+--- Replaces all substitution markers in a text with the given substitution list.
+--- @within Dialogue
+---
+--- This method replaces substitution markers - for example, `{0}` - with the
+--- corresponding entry in `substitutions`.
+---
+--- If `text` contains a substitution marker whose index is not present in `substitutions`,
+--- it is ignored.
+--- @param text string -- The text containing substitution markers
+--- @param substitutions { string } -- The list of substitutions
+--- @return string -- `text`, with the content from `substitutions` inserted.
+function Dialogue.ExpandSubstitutions(self: Dialogue, text: string, substitutions: { string }): string
+	for index, substitution in ipairs(substitutions) do
+		text = string.gsub(text, "{" .. index .. "}", substitution)
+	end
+
+	return text
+end
+
+--- Returns the tags for the node `nodeName`.
+--- @within Dialogue
+---
+--- The tags for a node are defined by setting the `tags` header in
+--- the node's source code. This header must be a space-separated list.
+--- @param nodeName string -- The name of the node
+--- @return { string }? -- The node's tag, or `nil` if the node is not present in the Program
+function Dialogue.GetTagsForNode(self: Dialogue, nodeName: string): { string }?
+	assert(self.Program, "Tried to call GetTagsForNode, but no program has been loaded!")
+
+	if #self.Program.nodes == 0 then
+		-- TODO: log error, no nodes are loaded
+		return nil
+	end
+
+	local node = self.Program.nodes[nodeName]
+	if node then
+		return node.tags
+	end
+
+	-- TODO: log error, node doesn't exist
+	return nil
+end
+
+--- Immediately stops the `Dialogue`.
+--- @within Dialogue
+---
+--- The [DialogueCompleteHandler](Dialogue#OnDialogueComplete) will not
+--- be called if the dialogue is ended by calling [Stop](Dialogue#Stop).
+function Dialogue.Stop(self: Dialogue)
+	-- TODO: stop VM
+end
+
+--- Unloads all nodes from the `Dialogue`.
+--- @within Dialogue
+function Dialogue.UnloadAll(self: Dialogue)
+	self.Program = nil
+end
 
 return Dialogue
