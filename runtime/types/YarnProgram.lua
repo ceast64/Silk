@@ -4,7 +4,7 @@
 ---
 --- Typedefs for Yarn programs to be used with the interpreter.
 
---- @type YarnProgram { name: string?,	nodes: { Node }, initial_values: { [string]: Operand },	strings: { [string]: StringInfo } }
+--- @type YarnProgram { name: string?,	nodes: { Node }, initial_values: { [string]: Operand },	strings: { [string]: StringInfo }, clone: () -> YarnProgram }
 --- @within YarnProgram
 export type YarnProgram = {
 	name: string?,
@@ -12,6 +12,8 @@ export type YarnProgram = {
 	initial_values: { [string]: Operand },
 
 	strings: { [string]: StringInfo },
+
+	clone: () -> YarnProgram,
 }
 
 --- @type StringInfo { text: string, nodeName: string, lineNumber: number, fileName: string, isImplicitTag: boolean, metadata: { string } }

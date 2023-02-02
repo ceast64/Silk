@@ -15,7 +15,7 @@ export type Dialogue = {
 	VariableStorage: { [string]: YarnProgram.Operand },
 	IsActive: boolean,
 	Library: { [string]: DialogueTypes.YarnFunction },
-	CurrentNode: string,
+	CurrentNode: string?,
 	NodeNames: { string },
 
 	Program: YarnProgram.YarnProgram?,
@@ -28,12 +28,13 @@ export type Dialogue = {
 	OnNodeStart: DialogueTypes.NodeStartHandler?,
 	OnPrepareForLines: DialogueTypes.PrepareForLinesHandler?,
 
-	AddProgram: (program: YarnProgram.YarnProgram) -> (),
-	Continue: () -> (),
-	ExpandSubstitutions: (text: string, substitutions: { string }) -> string,
-	GetTagsForNode: (nodeName: string) -> { string }?,
-	Stop: () -> (),
-	UnloadAll: () -> (),
+	AddProgram: (self: Dialogue, program: YarnProgram.YarnProgram) -> (),
+	Continue: (self: Dialogue) -> (),
+	ExpandSubstitutions: (self: Dialogue, text: string, substitutions: { string }) -> string,
+	GetTagsForNode: (self: Dialogue, nodeName: string) -> { string }?,
+	SetProgram: (self: Dialogue, program: YarnProgram.YarnProgram) -> (),
+	Stop: (self: Dialogue) -> (),
+	UnloadAll: (self: Dialogue) -> (),
 }
 
 -- docs for Dialogue objects
@@ -57,7 +58,7 @@ export type Dialogue = {
 ---
 --- The "library" of functions this Dialogue's Yarn code has access to.
 
---- @prop CurrentNode string
+--- @prop CurrentNode string?
 --- @within Dialogue
 ---
 --- The name of the current Node being executed.
@@ -118,8 +119,37 @@ export type Dialogue = {
 --- Loads the nodes from the specified Program, and adds them to the nodes already loaded.
 --- @within Dialogue
 ---
+--- If [Dialogue.Program](Dialogue#Program) is nil, this method has the same effect as calling
+--- [Dialogue.SetProgram](Dialogue#SetProgram).
 --- @param program YarnProgram -- The additional Program to load.
-function Dialogue.AddProgram(self: Dialogue, program: YarnProgram.YarnProgram) end
+function Dialogue.AddProgram(self: Dialogue, program: YarnProgram.YarnProgram)
+	if self.Program == nil then
+		self:SetProgram(program)
+		return
+	end
+
+	assert(self.Program) -- ???
+
+	-- not very efficient, but mirrors C# implementation closely
+	local clone = self.Program.clone()
+	local clone2 = program.clone()
+
+	for key, node in clone2.nodes do
+		assert(clone.nodes[key] ~= nil, "This program already contains a node with the name " .. key)
+		clone.nodes[key] = node
+	end
+
+	for key, value in clone2.initial_values do
+		clone.initial_values[key] = value
+	end
+
+	-- although we do copy strings as well
+	for key, str in clone2.strings do
+		clone.strings[key] = str
+	end
+
+	self.Program = clone
+end
 
 --- Starts or continues execution of the current Program.
 --- @within Dialogue
@@ -178,6 +208,16 @@ function Dialogue.GetTagsForNode(self: Dialogue, nodeName: string): { string }?
 
 	-- TODO: log error, node doesn't exist
 	return nil
+end
+
+--- Loads all nodes from the provided Program.
+--- @within Dialogue
+---
+--- This method replaces any existing nodes that have been loaded.
+--- If you want to load nodes from an _additional_ Program, use the [AddProgram](Dialogue#AddProgram) method.
+--- @param program YarnProgram -- The Program to use
+function Dialogue.SetProgram(self: Dialogue, program: YarnProgram.YarnProgram)
+	self.Program = program
 end
 
 --- Immediately stops the `Dialogue`.

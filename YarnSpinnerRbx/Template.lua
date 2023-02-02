@@ -5,13 +5,20 @@ local HttpService = game:GetService("HttpService")
 
 local Yarn = require(%YARNPATH%)
 
-local decoded = HttpService:JSONDecode(Yarn.base64.decode("%YARNPROGRAM%")) :: Yarn.RawProgram
-local name, nodes, initial_values = Yarn.decodeProgram(decoded)
+local decoded = HttpService:JSONDecode(Yarn.base64.decode("%YARNPROGRAM%"))
 
-return {
+local generate: () -> Yarn.Program
+generate = function()
+  local name, nodes, initial_values = Yarn.decodeProgram(decoded)
+
+  return {
     name = name,
     nodes = nodes,
     initial_values = initial_values,
-    
-    strings = HttpService:JSONDecode(Yarn.base64.decode("%YARNSTRINGS%"))
-} :: Yarn.Program
+
+    strings = HttpService:JSONDecode(Yarn.base64.decode("%YARNSTRINGS%")),
+    generate = generate
+  }
+end
+
+return generate()
