@@ -11,12 +11,11 @@ local DialogueTypes = require(types:WaitForChild("Dialogue"))
 ---
 --- Dialogue class used for executing a Yarn script.
 export type Dialogue = {
-	DefaultStartNodeName: string,
+	DefaultStartNodeName: string?,
 	VariableStorage: { [string]: YarnProgram.Operand },
 	IsActive: boolean,
 	Library: { [string]: DialogueTypes.YarnFunction },
 	CurrentNode: string?,
-	NodeNames: { string },
 
 	Program: YarnProgram.YarnProgram?,
 
@@ -28,6 +27,7 @@ export type Dialogue = {
 	OnNodeStart: DialogueTypes.NodeStartHandler?,
 	OnPrepareForLines: DialogueTypes.PrepareForLinesHandler?,
 
+	GetNodeNames: (self: Dialogue) -> { string },
 	AddProgram: (self: Dialogue, program: YarnProgram.YarnProgram) -> (),
 	Continue: (self: Dialogue) -> (),
 	ExpandSubstitutions: (self: Dialogue, text: string, substitutions: { string }) -> string,
@@ -115,6 +115,22 @@ export type Dialogue = {
 ---
 --- Called when the Dialogue anticipates that lines will be delivered soon.
 --- [See for more info.](Dialogue#PrepareForLinesHandler)
+
+--- Returns a list of all loaded nodes in the program.
+--- @within Dialogue
+---
+--- @return { string } -- The names of all loaded nodes
+function Dialogue.GetNodeNames(self: Dialogue): { string }
+	assert(self.Program, "Tried to call GetNodeNames, but no program has been loaded!")
+
+	local ret = {}
+
+	for key, _ in self.Program.nodes do
+		table.insert(ret, key)
+	end
+
+	return ret
+end
 
 --- Loads the nodes from the specified Program, and adds them to the nodes already loaded.
 --- @within Dialogue
@@ -233,6 +249,25 @@ end
 --- @within Dialogue
 function Dialogue.UnloadAll(self: Dialogue)
 	self.Program = nil
+end
+
+--- Create a new Dialogue object with optional source program and starting node.
+--- @within Dialogue
+---
+--- @param source YarnProgram? -- Source program
+--- @param startNode string? -- Starting node name
+--- @return Dialogue -- New dialogue object
+function Dialogue.new(source: YarnProgram.YarnProgram?, startNode: string?): Dialogue
+	local self = {
+		DefaultStartNodeName = startNode,
+		VariableStorage = {},
+		IsActive = false,
+		Library = {},
+		CurrentNode = nil,
+		Program = source,
+	}
+
+	return setmetatable(self :: any, Dialogue) :: Dialogue
 end
 
 return Dialogue
