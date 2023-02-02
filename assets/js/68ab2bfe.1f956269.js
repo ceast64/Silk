@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkdocs=self.webpackChunkdocs||[]).push([[803],{63891:s=>{s.exports=JSON.parse('{"sourceUrl":"https://github.com/ceast64/YarnSpinnerRbx/blob/main","baseUrl":"/YarnSpinnerRbx/","classOrder":[],"apiCategories":["callbacks","handlers"]}')}}]);
