@@ -431,3 +431,10 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+
+# Rojo
+sourcemap.json
+/*.rbxm
+/*.rbxmx
+/*.rbxlx.lock
+/*.rbxl.lock
