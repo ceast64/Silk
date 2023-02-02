@@ -438,3 +438,6 @@ sourcemap.json
 /*.rbxmx
 /*.rbxlx.lock
 /*.rbxl.lock
+
+# Moonwave
+build/
