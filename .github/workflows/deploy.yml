@@ -8,8 +8,9 @@ on:
       - main
     paths:
       - '.github/workflows/deploy.yml'
-      - 'website/**'
+      - '**.lua'
   pull_request:
+  workflow_dispatch:
 
 jobs:
   deploy:
@@ -20,7 +21,7 @@ jobs:
       group: ${{ github.workflow }}-${{ github.ref }}
     defaults:
       run:
-        working-directory: website
+        working-directory: $github_workspace
     steps:
       - uses: actions/checkout@v3
 
@@ -34,11 +35,11 @@ jobs:
         run: npm -i moonwave
 
       - name: Build site
-        run: moonwave build --code runtime --out-dir ./website/build
+        run: moonwave build --code runtime --out-dir ./build
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         if: ${{ github.ref == 'refs/heads/main' }}
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./website/build
+          publish_dir: ./build
