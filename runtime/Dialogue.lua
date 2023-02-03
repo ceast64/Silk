@@ -136,7 +136,7 @@ end
 --- @within Dialogue
 ---
 --- If [Dialogue.Program](Dialogue#Program) is nil, this method has the same effect as calling
---- [Dialogue.SetProgram](Dialogue#SetProgram).
+--- [Dialogue:SetProgram](Dialogue#SetProgram).
 --- @param program YarnProgram -- The additional Program to load.
 function Dialogue.AddProgram(self: Dialogue, program: YarnProgram.YarnProgram)
 	if self.Program == nil then

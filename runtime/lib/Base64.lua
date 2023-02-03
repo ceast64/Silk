@@ -31,7 +31,7 @@ end
 ---
 --- @param input string -- Data string
 --- @return string -- Base64 encoded data
-local function encode(input: string): string
+local function Encode(input: string): string
 	local inputLength = #input
 	local outputLength = math.ceil(inputLength / 3) * 4
 
@@ -82,7 +82,7 @@ end
 ---
 --- @param input string -- Encoded string
 --- @return string -- Decoded data
-local function decode(input: string): string
+local function Decode(input: string): string
 	local inputLength = #input
 	local outputLength = math.ceil(inputLength / 4) * 3
 
@@ -130,6 +130,6 @@ end
 --- Utility class for encoding/decoding Base64 data.
 --- Based on [this library by Reselim](https://github.com/Reselim/Base64).
 return {
-	encode = encode,
-	decode = decode,
+	Encode = Encode,
+	Decode = Decode,
 }
