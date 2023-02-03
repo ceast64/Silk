@@ -1,5 +1,8 @@
 --!strict
 
+--- @class Dialogue
+---
+--- Dialogue class used for executing a Yarn script.
 local Dialogue = {}
 Dialogue.__index = Dialogue
 
@@ -7,35 +10,7 @@ local types = script.Parent:WaitForChild("types")
 local YarnProgram = require(types:WaitForChild("YarnProgram"))
 local DialogueTypes = require(types:WaitForChild("Dialogue"))
 
---- @class Dialogue
----
---- Dialogue class used for executing a Yarn script.
-export type Dialogue = {
-	DefaultStartNodeName: string?,
-	VariableStorage: { [string]: YarnProgram.Operand },
-	IsActive: boolean,
-	Library: { [string]: DialogueTypes.YarnFunction },
-	CurrentNode: string?,
-
-	Program: YarnProgram.YarnProgram?,
-
-	OnOptions: DialogueTypes.OptionsHandler?,
-	OnCommand: DialogueTypes.CommandHandler?,
-	OnDialogueComplete: DialogueTypes.DialogueCompleteHandler?,
-	OnLine: DialogueTypes.LineHandler?,
-	OnNodeComplete: DialogueTypes.NodeCompleteHandler?,
-	OnNodeStart: DialogueTypes.NodeStartHandler?,
-	OnPrepareForLines: DialogueTypes.PrepareForLinesHandler?,
-
-	GetNodeNames: (self: Dialogue) -> { string },
-	AddProgram: (self: Dialogue, program: YarnProgram.YarnProgram) -> (),
-	Continue: (self: Dialogue) -> (),
-	ExpandSubstitutions: (self: Dialogue, text: string, substitutions: { string }) -> string,
-	GetTagsForNode: (self: Dialogue, nodeName: string) -> { string }?,
-	SetProgram: (self: Dialogue, program: YarnProgram.YarnProgram) -> (),
-	Stop: (self: Dialogue) -> (),
-	UnloadAll: (self: Dialogue) -> (),
-}
+local VirtualMachine = require(types:WaitForChild("VirtualMachine"))
 
 -- docs for Dialogue objects
 --- @prop DefaultStartNodeName string
@@ -53,7 +28,7 @@ export type Dialogue = {
 ---
 --- A value indicating whether the Dialogue is currently executing Yarn instructions.
 
---- @prop Library { [string]: YarnFunction }
+--- @prop Library { [string]: LibraryFunction }
 --- @within Dialogue
 ---
 --- The "library" of functions this Dialogue's Yarn code has access to.
@@ -116,11 +91,47 @@ export type Dialogue = {
 --- Called when the Dialogue anticipates that lines will be delivered soon.
 --- [See for more info.](Dialogue#PrepareForLinesHandler)
 
+--- Binds a function to this Dialogue's [Library](Dialogue#Library).
+--- @within Dialogue
+---
+--- :::caution
+--- Will error if a function with the same name is already bound!
+--- :::
+--- @param name string -- The name of the function to bind
+--- @param argCount number -- The number of arguments the virtual machine should expect
+--- @param argTypes { YarnType } -- The types of each argument to the function
+--- @param returnType YarnType? -- The type the function returns, or nil if it returns nothing
+--- @param func YarnFunction -- The Lua function to bind
+function Dialogue.BindFunction(
+	self: DialogueTypes.Dialogue,
+	name: string,
+	argCount: number,
+	argTypes: { DialogueTypes.YarnType },
+	returnType: DialogueTypes.YarnType?,
+	func: DialogueTypes.YarnFunction
+)
+	assert(self.Library[name] == nil, "Function " .. name .. " is already bound.")
+	self.Library[name] = {
+		argCount = argCount,
+		argTypes = argTypes,
+		returnType = returnType,
+		func = func,
+	}
+end
+
+--- Unbinds a function from this Dialogue's [Library](Dialogue#Library).
+--- @within Dialogue
+---
+--- @param name string -- The name of the function to unbind
+function Dialogue.UnbindFunction(self: DialogueTypes.Dialogue, name: string)
+	self.Library[name] = nil
+end
+
 --- Returns a list of all loaded nodes in the program.
 --- @within Dialogue
 ---
 --- @return { string } -- The names of all loaded nodes
-function Dialogue.GetNodeNames(self: Dialogue): { string }
+function Dialogue.GetNodeNames(self: DialogueTypes.Dialogue): { string }
 	assert(self.Program, "Tried to call GetNodeNames, but no program has been loaded!")
 
 	local ret = {}
@@ -138,7 +149,7 @@ end
 --- If [Dialogue.Program](Dialogue#Program) is nil, this method has the same effect as calling
 --- [Dialogue:SetProgram](Dialogue#SetProgram).
 --- @param program YarnProgram -- The additional Program to load.
-function Dialogue.AddProgram(self: Dialogue, program: YarnProgram.YarnProgram)
+function Dialogue.AddProgram(self: DialogueTypes.Dialogue, program: YarnProgram.YarnProgram)
 	if self.Program == nil then
 		self:SetProgram(program)
 		return
@@ -179,8 +190,9 @@ end
 --- - The Program reaches its end. When this occurs, `SetNode()` must be called before `Continue()` is called again.
 --- - An error occurs while executing the Program.
 --- This method has no effect if it is called while the Dialogue is currently in the process of executing instructions.
-function Dialogue.Continue(self: Dialogue)
-	-- TODO: start execution in VM
+function Dialogue.Continue(self: DialogueTypes.Dialogue)
+	local vm = self.VirtualMachine :: VirtualMachine.VirtualMachine
+	vm:Continue()
 end
 
 --- Replaces all substitution markers in a text with the given substitution list.
@@ -194,9 +206,9 @@ end
 --- @param text string -- The text containing substitution markers
 --- @param substitutions { string } -- The list of substitutions
 --- @return string -- `text`, with the content from `substitutions` inserted.
-function Dialogue.ExpandSubstitutions(self: Dialogue, text: string, substitutions: { string }): string
+function Dialogue.ExpandSubstitutions(self: DialogueTypes.Dialogue, text: string, substitutions: { string }): string
 	for index, substitution in ipairs(substitutions) do
-		text = string.gsub(text, "{" .. index .. "}", substitution)
+		text = string.gsub(text, "{" .. index - 1 .. "}", substitution)
 	end
 
 	return text
@@ -209,7 +221,7 @@ end
 --- the node's source code. This header must be a space-separated list.
 --- @param nodeName string -- The name of the node
 --- @return { string }? -- The node's tag, or `nil` if the node is not present in the Program
-function Dialogue.GetTagsForNode(self: Dialogue, nodeName: string): { string }?
+function Dialogue.GetTagsForNode(self: DialogueTypes.Dialogue, nodeName: string): { string }?
 	assert(self.Program, "Tried to call GetTagsForNode, but no program has been loaded!")
 
 	if #self.Program.nodes == 0 then
@@ -232,7 +244,7 @@ end
 --- This method replaces any existing nodes that have been loaded.
 --- If you want to load nodes from an _additional_ Program, use the [AddProgram](Dialogue#AddProgram) method.
 --- @param program YarnProgram -- The Program to use
-function Dialogue.SetProgram(self: Dialogue, program: YarnProgram.YarnProgram)
+function Dialogue.SetProgram(self: DialogueTypes.Dialogue, program: YarnProgram.YarnProgram)
 	self.Program = program
 end
 
@@ -241,23 +253,25 @@ end
 ---
 --- The [DialogueCompleteHandler](Dialogue#OnDialogueComplete) will not
 --- be called if the dialogue is ended by calling [Stop](Dialogue#Stop).
-function Dialogue.Stop(self: Dialogue)
-	-- TODO: stop VM
+function Dialogue.Stop(self: DialogueTypes.Dialogue)
+	local vm = self.VirtualMachine :: VirtualMachine.VirtualMachine
+	vm.executionState = "Stopped"
 end
 
 --- Unloads all nodes from the `Dialogue`.
 --- @within Dialogue
-function Dialogue.UnloadAll(self: Dialogue)
+function Dialogue.UnloadAll(self: DialogueTypes.Dialogue)
 	self.Program = nil
 end
 
 --- Create a new Dialogue object with optional source program and starting node.
 --- @within Dialogue
+--- @tag constructor
 ---
 --- @param source YarnProgram? -- Source program
 --- @param startNode string? -- Starting node name
 --- @return Dialogue -- New dialogue object
-function Dialogue.new(source: YarnProgram.YarnProgram?, startNode: string?): Dialogue
+function Dialogue.new(source: YarnProgram.YarnProgram?, startNode: string?): DialogueTypes.Dialogue
 	local self = {
 		DefaultStartNodeName = startNode,
 		VariableStorage = {},
@@ -267,7 +281,7 @@ function Dialogue.new(source: YarnProgram.YarnProgram?, startNode: string?): Dia
 		Program = source,
 	}
 
-	return setmetatable(self :: any, Dialogue) :: Dialogue
+	return setmetatable(self :: any, Dialogue) :: DialogueTypes.Dialogue
 end
 
 return Dialogue

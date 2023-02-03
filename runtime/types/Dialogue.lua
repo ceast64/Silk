@@ -3,7 +3,38 @@
 
 local YarnProgram = require(script.Parent:WaitForChild("YarnProgram"))
 
---- @type Line { id: string, substitutions: { string } }
+export type Dialogue = {
+	DefaultStartNodeName: string?,
+	VariableStorage: { [string]: YarnProgram.Operand },
+	IsActive: boolean,
+	Library: { [string]: LibraryFunction },
+	CurrentNode: string?,
+
+	Program: YarnProgram.YarnProgram?,
+	VirtualMachine: any,
+
+	OnOptions: OptionsHandler?,
+	OnCommand: CommandHandler?,
+	OnDialogueComplete: DialogueCompleteHandler?,
+	OnLine: LineHandler?,
+	OnNodeComplete: NodeCompleteHandler?,
+	OnNodeStart: NodeStartHandler?,
+	OnPrepareForLines: PrepareForLinesHandler?,
+
+	BindFunction: (self: Dialogue, name: string, argCount: number, func: YarnFunction) -> (),
+	UnbindFunction: (self: Dialogue, name: string) -> (),
+
+	GetNodeNames: (self: Dialogue) -> { string },
+	AddProgram: (self: Dialogue, program: YarnProgram.YarnProgram) -> (),
+	Continue: (self: Dialogue) -> (),
+	ExpandSubstitutions: (self: Dialogue, text: string, substitutions: { string }) -> string,
+	GetTagsForNode: (self: Dialogue, nodeName: string) -> { string }?,
+	SetProgram: (self: Dialogue, program: YarnProgram.YarnProgram) -> (),
+	Stop: (self: Dialogue) -> (),
+	UnloadAll: (self: Dialogue) -> (),
+}
+
+--- @type Line { id: string, substitutions: { string }? }
 --- @within Dialogue
 ---
 --- Represents a line of Yarn dialogue.
@@ -15,8 +46,37 @@ local YarnProgram = require(script.Parent:WaitForChild("YarnProgram"))
 --- :::
 export type Line = {
 	id: string,
-	substitutions: { string },
+	substitutions: { string }?,
 }
+
+--- @type Option { line: Line, destination: string, enabled: boolean }
+--- @within Dialogue
+---
+--- Represents an option in a Yarn dialogue. The `destination` property is
+--- the node ID to run if the option is selected.
+export type Option = {
+	line: Line,
+	index: number,
+	destination: string,
+	enabled: boolean,
+}
+
+--- @type LibraryFunction { argCount: number, argTypes: { YarnType }, returnType: YarnType?, func: YarnFunction }
+--- @within Dialogue
+---
+--- Represents a function callable by Yarn.
+export type LibraryFunction = {
+	argCount: number,
+	argTypes: { YarnType },
+	returnType: YarnType?,
+	func: YarnFunction,
+}
+
+--- @type YarnType "string" | "boolean" | "number"
+--- @within Dialogue
+---
+--- A type of argument to a bound Yarn function.
+export type YarnType = "string" | "boolean" | "number"
 
 --- @type YarnFunction (...Operand) -> ...Operand
 --- @within Dialogue
@@ -24,10 +84,10 @@ export type Line = {
 --- A function that can be called by Yarn code.
 export type YarnFunction = (...YarnProgram.Operand) -> ...YarnProgram.Operand
 
---- @type OptionsHandler () -> ()
+--- @type OptionsHandler ({ Option }) -> ()
 --- @within Dialogue
 --- @tag handlers
-export type OptionsHandler = () -> ()
+export type OptionsHandler = ({ Option }) -> ()
 
 --- @type CommandHandler (text: string) -> ()
 --- @within Dialogue
