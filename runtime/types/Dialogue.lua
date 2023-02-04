@@ -21,7 +21,14 @@ export type Dialogue = {
 	OnNodeStart: NodeStartHandler?,
 	OnPrepareForLines: PrepareForLinesHandler?,
 
-	BindFunction: (self: Dialogue, name: string, argCount: number, func: YarnFunction) -> (),
+	BindFunction: (
+		self: Dialogue,
+		name: string,
+		argCount: number,
+		argTypes: { YarnType },
+		returnType: YarnType?,
+		func: YarnFunction
+	) -> (),
 	UnbindFunction: (self: Dialogue, name: string) -> (),
 
 	GetNodeNames: (self: Dialogue) -> { string },
