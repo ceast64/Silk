@@ -1,6 +1,7 @@
 # YarnSpinnerRbx
 
 ## TODO (in no particular order):
+- **WRITE A BETTER README**
 - lots of testing
 - debug info callbacks
 - move Dialogue.Library to its own class
