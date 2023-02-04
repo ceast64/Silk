@@ -156,6 +156,15 @@ end
 ---
 --- Calls [CheckCanContinue](VirtualMachine#CheckCanContinue) internally.
 function VirtualMachine.Continue(self: VirtualMachine)
+	if self.currentNode == nil or self.currentNodeName == nil then
+		local defaultNode = assert(
+			self.dialogue.DefaultStartNodeName,
+			"Cannot continue running dialogue. Current node has not been set and the DefaultStartNodeName property of the parent Dialogue is nil."
+		)
+
+		self:SetNode(defaultNode)
+	end
+
 	self:CheckCanContinue()
 
 	if self.executionState == "DeliveringContent" then
