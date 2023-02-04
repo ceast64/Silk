@@ -17,7 +17,7 @@ generate = function()
     initial_values = initial_values,
 
     strings = HttpService:JSONDecode(Yarn.Base64.Decode("%YARNSTRINGS%")),
-    generate = generate
+    clone = generate
   }
 end
 
