@@ -40,7 +40,9 @@ end
 --- @error Stack underflow -- The Stack is currently empty, so a value cannot be popped.
 function Stack.pop(self: StackTypes.Stack): YarnProgram.Operand
 	assert(#self.items > 0, "Stack underflow")
-	return assert(table.remove(self.items, #self.items))
+	local value = table.remove(self.items, #self.items)
+	assert(value ~= nil)
+	return value
 end
 
 --- Clear the Stack's values.

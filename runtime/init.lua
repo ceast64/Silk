@@ -14,6 +14,7 @@ local Base64 = require(lib:WaitForChild("Base64"))
 local types = script:WaitForChild("types")
 local RawProgram = require(types:WaitForChild("RawProgram"))
 local YarnProgram = require(types:WaitForChild("YarnProgram"))
+local DialogueTypes = require(types:WaitForChild("Dialogue"))
 
 -- export these types here for ease of use in generated scripts
 
@@ -28,6 +29,42 @@ export type RawProgram = RawProgram.RawProgram
 ---
 --- [See full type here.](YarnProgram)
 export type Program = YarnProgram.YarnProgram
+
+--- @type Line Line
+--- @within Yarn
+---
+--- [See full type here.](Dialogue#Line)
+export type Line = DialogueTypes.Line
+
+--- @type Option Option
+--- @within Yarn
+---
+--- [See full type here.](Dialogue#Option)
+export type Option = DialogueTypes.Option
+
+--- @type LibraryFunction LibraryFunction
+--- @within Yarn
+---
+--- [See full type here.](Dialogue#LibraryFunction)
+export type LibraryFunction = DialogueTypes.LibraryFunction
+
+--- @type YarnFunction YarnFunction
+--- @within Yarn
+---
+--- [See full type here.](Dialogue#YarnFunction)
+export type YarnFunction = DialogueTypes.YarnFunction
+
+--- @type YarnTypeName YarnType
+--- @within Yarn
+---
+--- [See full type here.](Dialogue#YarnType)
+export type YarnTypeName = DialogueTypes.YarnType
+
+--- @type YarnArgument YarnProgram.Operand
+--- @within Yarn
+---
+--- [See full type here.](YarnProgram#Operand)
+export type YarnArgument = YarnProgram.Operand
 
 --- @prop Base64 Base64
 --- @within Yarn
@@ -69,7 +106,7 @@ local function decodeInstructions(code: { RawProgram.Instruction }): { YarnProgr
 
 	for _, ins in ipairs(code) do
 		local new = {}
-		new.opcode = RawProgram.Opcodes[ins.opcode]
+		new.opcode = RawProgram.Opcodes[ins.opcode or "JUMP_TO" :: RawProgram.Opcode]
 		new.operands = table.create(if ins.operands then #ins.operands else 0)
 
 		if ins.operands then

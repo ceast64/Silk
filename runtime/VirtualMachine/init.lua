@@ -215,7 +215,7 @@ function VirtualMachine.FindInstructionPointForLabel(self: VirtualMachine, label
 	return assert(
 		self.currentNode.labels[labelName],
 		"Unknown label " .. labelName .. " in node " .. self.currentNode.name
-	)
+	) + 1
 end
 
 --- Return a Line with the given string ID and expression count.
@@ -262,7 +262,7 @@ function VirtualMachine.RunInstruction(self: VirtualMachine, i: YarnProgram.Inst
 		if op < 3 then
 			if op < 1 then
 				-- JUMP_TO
-				self.programCounter = self:FindInstructionPointForLabel(i.operands[1] :: string)
+				self.programCounter = self:FindInstructionPointForLabel(i.operands[1] :: string) - 1
 			elseif op > 1 then
 				-- RUN_LINE
 				local line = self:GetLine(i.operands[1] :: string, i.operands[2] :: number)
@@ -282,7 +282,7 @@ function VirtualMachine.RunInstruction(self: VirtualMachine, i: YarnProgram.Inst
 			else
 				-- JUMP
 				local jumpDestination = self.stack:peek() :: string
-				self.programCounter = self:FindInstructionPointForLabel(jumpDestination)
+				self.programCounter = self:FindInstructionPointForLabel(jumpDestination) - 1
 			end
 		elseif op > 3 then
 			if op < 6 then
@@ -440,8 +440,8 @@ function VirtualMachine.RunInstruction(self: VirtualMachine, i: YarnProgram.Inst
 				end
 			else
 				-- JUMP_IF_FALSE
-				if self.stack:peek() == true then
-					self.programCounter = self:FindInstructionPointForLabel(i.operands[1] :: string)
+				if self.stack:peek() == false then
+					self.programCounter = self:FindInstructionPointForLabel(i.operands[1] :: string) - 1
 				end
 			end
 		elseif op > 13 then

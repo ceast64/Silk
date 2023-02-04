@@ -33,7 +33,7 @@ export type Header = {
 --- @type Instruction { opcode: RawProgram.Opcode, operands: { RawProgram.Operand }? }
 --- @within RawProgram
 export type Instruction = {
-	opcode: Opcode,
+	opcode: Opcode?,
 	operands: { Operand }?,
 }
 
