@@ -27,7 +27,7 @@ export type Dialogue = {
 	GetNodeNames: (self: Dialogue) -> { string },
 	AddProgram: (self: Dialogue, program: YarnProgram.YarnProgram) -> (),
 	Continue: (self: Dialogue) -> (),
-	ExpandSubstitutions: (self: Dialogue, text: string, substitutions: { string }) -> string,
+	ExpandSubstitutions: (self: Dialogue, text: string, substitutions: { string }?) -> string,
 	GetTagsForNode: (self: Dialogue, nodeName: string) -> { string }?,
 	SetProgram: (self: Dialogue, program: YarnProgram.YarnProgram) -> (),
 	Stop: (self: Dialogue) -> (),

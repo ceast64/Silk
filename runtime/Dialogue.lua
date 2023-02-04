@@ -207,11 +207,13 @@ end
 ---
 --- If `text` contains a substitution marker whose index is not present in `substitutions`,
 --- it is ignored.
+---
+--- If `substitutions` is nil, will return the original string unmodified.
 --- @param text string -- The text containing substitution markers
---- @param substitutions { string } -- The list of substitutions
+--- @param substitutions { string }? -- The list of substitutions
 --- @return string -- `text`, with the content from `substitutions` inserted.
-function Dialogue.ExpandSubstitutions(self: DialogueTypes.Dialogue, text: string, substitutions: { string }): string
-	for index, substitution in ipairs(substitutions) do
+function Dialogue.ExpandSubstitutions(self: DialogueTypes.Dialogue, text: string, substitutions: { string }?): string
+	for index, substitution in ipairs(substitutions or {}) do
 		text = string.gsub(text, "{" .. index - 1 .. "}", substitution)
 	end
 
