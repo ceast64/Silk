@@ -51,12 +51,14 @@ local VirtualMachine = require(types:WaitForChild("VirtualMachine"))
 --- @prop OnOptions OptionsHandler?
 --- @within Dialogue
 --- @tag callbacks
+--- @tag required
 ---
 --- Called when the Dialogue has options to deliver to the user.
 
 --- @prop OnCommand CommandHandler?
 --- @within Dialogue
 --- @tag callbacks
+--- @tag required
 ---
 --- Called when the Dialogue has a command to execute.
 
@@ -69,12 +71,14 @@ local VirtualMachine = require(types:WaitForChild("VirtualMachine"))
 --- @prop OnLine LineHandler?
 --- @within Dialogue
 --- @tag callbacks
+--- @tag required
 ---
 --- Called when the Dialogue delivers a line to the game.
 
 --- @prop OnNodeComplete NodeCompleteHandler?
 --- @within Dialogue
 --- @tag callbacks
+--- @tag required
 ---
 --- Called when the Dialogue has reached the end of a Node.
 

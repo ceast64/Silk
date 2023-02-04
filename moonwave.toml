@@ -9,7 +9,8 @@ apiCategories = [
   "callbacks",
   "handlers",
   "libraries",
-  "constructor"
+  "constructor",
+  "required"
 ]
 
 [docusaurus]
