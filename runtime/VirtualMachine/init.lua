@@ -434,7 +434,7 @@ function VirtualMachine.RunInstruction(self: VirtualMachine, i: YarnProgram.Inst
 						)
 					)
 
-					if func.returnType then
+					if func.returnType and ret ~= nil then
 						self.stack:push(ret)
 					end
 				end

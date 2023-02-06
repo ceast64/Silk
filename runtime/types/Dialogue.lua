@@ -89,7 +89,7 @@ export type YarnType = "string" | "boolean" | "number"
 --- @within Dialogue
 ---
 --- A function that can be called by Yarn code.
-export type YarnFunction = (...YarnProgram.Operand) -> ...YarnProgram.Operand
+export type YarnFunction = (...YarnProgram.Operand) -> ...YarnProgram.Operand?
 
 --- @type OptionsHandler ({ Option }) -> ()
 --- @within Dialogue
