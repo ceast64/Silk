@@ -9,7 +9,7 @@ on:
     paths:
       - '.github/workflows/deploy.yml'
       - '**.lua'
-      - 'docs/**'
+      - '**.md'
   pull_request:
   workflow_dispatch:
 
