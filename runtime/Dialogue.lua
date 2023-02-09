@@ -9,8 +9,10 @@ Dialogue.__index = Dialogue
 local types = script.Parent:WaitForChild("types")
 local YarnProgram = require(types:WaitForChild("YarnProgram"))
 local DialogueTypes = require(types:WaitForChild("Dialogue"))
+local VirtualMachineTypes = require(types:WaitForChild("VirtualMachine"))
 
-local VirtualMachine = require(types:WaitForChild("VirtualMachine"))
+local VirtualMachine = require(script.Parent:WaitForChild("VirtualMachine"))
+local Library = require(script.Parent:WaitForChild("Library"))
 
 -- docs for Dialogue objects
 --- @prop DefaultStartNodeName string
@@ -28,7 +30,7 @@ local VirtualMachine = require(types:WaitForChild("VirtualMachine"))
 ---
 --- A value indicating whether the Dialogue is currently executing Yarn instructions.
 
---- @prop Library { [string]: LibraryFunction }
+--- @prop Library Library
 --- @within Dialogue
 ---
 --- The "library" of functions this Dialogue's Yarn code has access to.
@@ -95,42 +97,6 @@ local VirtualMachine = require(types:WaitForChild("VirtualMachine"))
 --- Called when the Dialogue anticipates that lines will be delivered soon.
 --- [See for more info.](Dialogue#PrepareForLinesHandler)
 
---- Binds a function to this Dialogue's [Library](Dialogue#Library).
---- @within Dialogue
----
---- :::caution
---- Will error if a function with the same name is already bound!
---- :::
---- @param name string -- The name of the function to bind
---- @param argCount number -- The number of arguments the virtual machine should expect
---- @param argTypes { YarnType } -- The types of each argument to the function
---- @param returnType YarnType? -- The type the function returns, or nil if it returns nothing
---- @param func YarnFunction -- The Lua function to bind
-function Dialogue.BindFunction(
-	self: DialogueTypes.Dialogue,
-	name: string,
-	argCount: number,
-	argTypes: { DialogueTypes.YarnType },
-	returnType: DialogueTypes.YarnType?,
-	func: DialogueTypes.YarnFunction
-)
-	assert(self.Library[name] == nil, "Function " .. name .. " is already bound.")
-	self.Library[name] = {
-		argCount = argCount,
-		argTypes = argTypes,
-		returnType = returnType,
-		func = func,
-	}
-end
-
---- Unbinds a function from this Dialogue's [Library](Dialogue#Library).
---- @within Dialogue
----
---- @param name string -- The name of the function to unbind
-function Dialogue.UnbindFunction(self: DialogueTypes.Dialogue, name: string)
-	self.Library[name] = nil
-end
-
 --- Returns a list of all loaded nodes in the program.
 --- @within Dialogue
 ---
@@ -195,7 +161,7 @@ end
 --- - An error occurs while executing the Program.
 --- This method has no effect if it is called while the Dialogue is currently in the process of executing instructions.
 function Dialogue.Continue(self: DialogueTypes.Dialogue)
-	local vm = self.VirtualMachine :: VirtualMachine.VirtualMachine
+	local vm = self.VirtualMachine :: VirtualMachineTypes.VirtualMachine
 	vm:Continue()
 end
 
@@ -260,7 +226,7 @@ end
 --- The [DialogueCompleteHandler](Dialogue#OnDialogueComplete) will not
 --- be called if the dialogue is ended by calling [Stop](Dialogue#Stop).
 function Dialogue.Stop(self: DialogueTypes.Dialogue)
-	local vm = self.VirtualMachine :: VirtualMachine.VirtualMachine
+	local vm = self.VirtualMachine :: VirtualMachineTypes.VirtualMachine
 	vm.executionState = "Stopped"
 end
 
@@ -276,8 +242,13 @@ end
 ---
 --- @param source YarnProgram? -- Source program
 --- @param startNode string? -- Starting node name
+--- @param registerStandardLibrary boolean? -- Whether or not to register the standard functions for value comparison and arithmetic, defaults to true
 --- @return Dialogue -- New dialogue object
-function Dialogue.new(source: YarnProgram.YarnProgram?, startNode: string?): DialogueTypes.Dialogue
+function Dialogue.new(
+	source: YarnProgram.YarnProgram?,
+	startNode: string?,
+	registerStandardLibrary: boolean?
+): DialogueTypes.Dialogue
 	local self = {
 		DefaultStartNodeName = startNode,
 		VariableStorage = {},
@@ -287,7 +258,17 @@ function Dialogue.new(source: YarnProgram.YarnProgram?, startNode: string?): Dia
 		Program = source,
 	}
 
-	return setmetatable(self :: any, Dialogue) :: DialogueTypes.Dialogue
+	local new = setmetatable(self :: any, Dialogue) :: DialogueTypes.Dialogue
+	self.VirtualMachine = VirtualMachine.new(new)
+	local library = Library.new()
+
+	if registerStandardLibrary ~= false then
+		library:RegisterStandardLibrary()
+	end
+
+	self.Library = library
+
+	return new
 end
 
 return Dialogue

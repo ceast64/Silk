@@ -382,10 +382,12 @@ function VirtualMachine.RunInstruction(self: VirtualMachine, i: YarnProgram.Inst
 					local functionName = i.operands[1] :: string
 
 					-- get the function from the Library
-					local func =
-						assert(dialogue.Library[functionName], "The function " .. functionName .. " does not exist!")
+					local func = assert(
+						dialogue.Library:GetFunction(functionName),
+						"The function " .. functionName .. " does not exist!"
+					)
 
-					local expectedParamCount = func.argCount
+					local expectedParamCount = func.argumentCount
 					local actualParamCount = math.floor(self.stack:pop() :: number)
 
 					if actualParamCount ~= expectedParamCount then
@@ -402,39 +404,12 @@ function VirtualMachine.RunInstruction(self: VirtualMachine, i: YarnProgram.Inst
 					local params = table.create(actualParamCount)
 
 					for param = actualParamCount, 1, -1 do
-						local val = self.stack:pop()
-
-						-- perform typechecking on each parameter
-						local valType = typeof(val)
-						local expected = func.argTypes[param] :: string
-						assert(
-							valType == expected,
-							string.format(
-								"Argument %d of function %s expected %s argument, got %s",
-								param,
-								functionName,
-								expected,
-								valType
-							)
-						)
-
-						table.insert(params, val)
+						params[param] = self.stack:pop()
 					end
 
 					local ret = func.func(table.unpack(params))
-					local retType = typeof(ret)
 
-					assert(
-						retType == func.returnType :: string?,
-						string.format(
-							"Function %s returned an invalid-typed value. Expected %s, got %s",
-							functionName,
-							func.returnType or "nil",
-							retType
-						)
-					)
-
-					if func.returnType and ret ~= nil then
+					if ret ~= nil then
 						self.stack:push(ret)
 					end
 				end

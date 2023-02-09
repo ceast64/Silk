@@ -2,12 +2,13 @@
 --!nolint ImportUnused
 
 local YarnProgram = require(script.Parent:WaitForChild("YarnProgram"))
+local Library = require(script.Parent:WaitForChild("Library"))
 
 export type Dialogue = {
 	DefaultStartNodeName: string?,
 	VariableStorage: { [string]: YarnProgram.Operand },
 	IsActive: boolean,
-	Library: { [string]: LibraryFunction },
+	Library: Library.Library,
 	CurrentNode: string?,
 
 	Program: YarnProgram.YarnProgram?,
@@ -20,16 +21,6 @@ export type Dialogue = {
 	OnNodeComplete: NodeCompleteHandler?,
 	OnNodeStart: NodeStartHandler?,
 	OnPrepareForLines: PrepareForLinesHandler?,
-
-	BindFunction: (
-		self: Dialogue,
-		name: string,
-		argCount: number,
-		argTypes: { YarnType },
-		returnType: YarnType?,
-		func: YarnFunction
-	) -> (),
-	UnbindFunction: (self: Dialogue, name: string) -> (),
 
 	GetNodeNames: (self: Dialogue) -> { string },
 	AddProgram: (self: Dialogue, program: YarnProgram.YarnProgram) -> (),
@@ -67,29 +58,6 @@ export type Option = {
 	destination: string,
 	enabled: boolean,
 }
-
---- @type LibraryFunction { argCount: number, argTypes: { YarnType }, returnType: YarnType?, func: YarnFunction }
---- @within Dialogue
----
---- Represents a function callable by Yarn.
-export type LibraryFunction = {
-	argCount: number,
-	argTypes: { YarnType },
-	returnType: YarnType?,
-	func: YarnFunction,
-}
-
---- @type YarnType "string" | "boolean" | "number"
---- @within Dialogue
----
---- A type of argument to a bound Yarn function.
-export type YarnType = "string" | "boolean" | "number"
-
---- @type YarnFunction (...Operand) -> ...Operand
---- @within Dialogue
----
---- A function that can be called by Yarn code.
-export type YarnFunction = (...YarnProgram.Operand) -> ...YarnProgram.Operand?
 
 --- @type OptionsHandler ({ Option }) -> ()
 --- @within Dialogue
