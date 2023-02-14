@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YarnSpinnerRbx", "YarnSpinnerRbx\YarnSpinnerRbx.csproj", "{444D328F-6C09-47CA-BD20-3EE577686A98}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Silk", "Silk\Silk.csproj", "{444D328F-6C09-47CA-BD20-3EE577686A98}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1,4 +1,4 @@
-# YarnSpinnerRbx
+# Silk
 
 ## TODO (in no particular order):
 - **WRITE A BETTER README**

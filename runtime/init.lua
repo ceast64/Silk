@@ -1,9 +1,9 @@
 --!strict
 
---- @class Yarn
+--- @class Silk
 ---
---- Main module used for interacting with Yarn dialogue.
-local Yarn = {}
+--- Main module containing libraries to interact with Yarn dialogue.
+local Silk = {}
 
 local Dialogue = require(script:WaitForChild("Dialogue"))
 local VirtualMachine = require(script:WaitForChild("VirtualMachine"))
@@ -21,68 +21,68 @@ local LibraryTypes = require(types:WaitForChild("Library"))
 -- export these types here for ease of use in generated scripts
 
 --- @type Line Line
---- @within Yarn
+--- @within Silk
 ---
 --- [See full type here.](Dialogue#Line)
 export type Line = DialogueTypes.Line
 
 --- @type Option Option
---- @within Yarn
+--- @within Silk
 ---
 --- [See full type here.](Dialogue#Option)
 export type Option = DialogueTypes.Option
 
 --- @type Program YarnProgram
---- @within Yarn
+--- @within Silk
 ---
 --- [See full type here.](YarnProgram)
 export type Program = YarnProgram.YarnProgram
 
 --- @type RawProgram RawProgram
---- @within Yarn
+--- @within Silk
 ---
 --- [See full type here.](RawProgram)
 export type RawProgram = RawProgram.RawProgram
 
 --- @type YarnArgument Operand
---- @within Yarn
+--- @within Silk
 ---
 --- [See full type here.](YarnProgram#Operand)
 export type YarnArgument = YarnProgram.Operand
 
 --- @type YarnFunction YarnFunction
---- @within Yarn
+--- @within Silk
 ---
 --- [See full type here.](Library#YarnFunction)
 export type YarnFunction = LibraryTypes.YarnFunction
 
 --- @prop Base64 Base64
---- @within Yarn
+--- @within Silk
 --- @tag libraries
 ---
 --- Base64 library used by generated modules.
-Yarn.Base64 = Base64
+Silk.Base64 = Base64
 
 --- @prop Dialogue Dialogue
---- @within Yarn
+--- @within Silk
 --- @tag libraries
 ---
 --- Dialogue library used for running a Yarn script.
-Yarn.Dialogue = Dialogue
+Silk.Dialogue = Dialogue
 
 --- @prop VirtualMachine VirtualMachine
---- @within Yarn
+--- @within Silk
 --- @tag libraries
 ---
 --- Virtual machine library used for executing Yarn instructions.
-Yarn.VirtualMachine = VirtualMachine
+Silk.VirtualMachine = VirtualMachine
 
 --- @prop Library Library
---- @within Yarn
+--- @within Silk
 --- @tag libraries
 ---
 --- Library used for storing functions bound to a Yarn program.
-Yarn.Library = Library
+Silk.Library = Library
 
 local function getOperand(operand: RawProgram.Operand): YarnProgram.Operand
 	return if operand.boolValue ~= nil
@@ -114,15 +114,15 @@ end
 
 --- Decode a compiled Yarn program
 --- :::note
----   This method will usually only be used by generated YarnSpinnerRbx scripts.
+---   This method will usually only be used by generated Silk scripts.
 --- :::
---- @within Yarn
+--- @within Silk
 ---
 --- @param compiled RawProgram -- Compiled program data
 --- @return string? -- Program name if exists
 --- @return { [string]: YarnProgram.Node } -- Node lookup table
 --- @return { [string]: YarnProgram.Operand } -- Initial values table
-function Yarn.DecodeProgram(
+function Silk.DecodeProgram(
 	compiled: RawProgram
 ): (string?, { [string]: YarnProgram.Node }, { [string]: YarnProgram.Operand })
 	local newNodes = {} :: { [string]: YarnProgram.Node }
@@ -148,4 +148,4 @@ function Yarn.DecodeProgram(
 	return compiled.name, newNodes, newInitialValues
 end
 
-return table.freeze(Yarn)
+return table.freeze(Silk)

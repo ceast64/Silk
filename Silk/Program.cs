@@ -6,8 +6,8 @@ using Newtonsoft.Json;
 using Serilog;
 using Serilog.Sinks.SystemConsole.Themes;
 using Yarn.Compiler;
+using Silk;
 
-string          template;
 ParallelOptions parallelOptions = new() { MaxDegreeOfParallelism = -1 };
 
 // create CLI commands
@@ -26,7 +26,7 @@ outputOption.AddAlias("-o");
 
 var pathOption = new Option<string>(
   "--runtimePath",
-  "Path to the YarnSpinnerRbx runtime in Roblox\n example: \"game.ReplicatedStorage.Yarn\"")
+  "Path to the Silk runtime in your Rojo project\n example: \"game.ReplicatedStorage.Silk\"")
 {
   IsRequired = true
 };
@@ -60,9 +60,6 @@ async Task CommandHandler(DirectoryInfo input, DirectoryInfo output, string yarn
   if (!output.Exists)
     output.Create();
 
-  // load output template
-  template = await File.ReadAllTextAsync("Template.lua");
-
   // compile the files in the directory
   await CompileDirectory(input, output, yarnPath);
 
@@ -70,7 +67,7 @@ async Task CommandHandler(DirectoryInfo input, DirectoryInfo output, string yarn
   await Log.CloseAndFlushAsync();
 }
 
-async Task CompileDirectory(DirectoryInfo sourcePath, DirectoryInfo outputPath, string yarnPath)
+async Task CompileDirectory(DirectoryInfo sourcePath, DirectoryInfo outputPath, string silkPath)
 {
   FileInfo[] files;
 
@@ -140,7 +137,7 @@ async Task CompileDirectory(DirectoryInfo sourcePath, DirectoryInfo outputPath, 
     var stringsEncoded = Convert.ToBase64String(Encoding.UTF8.GetBytes(stringJson));
 
     // fill in template
-    var output = template.Replace("%YARNPATH%", yarnPath);
+    var output = Template.ScriptTemplate.Replace("%SILKPATH%", silkPath);
     output = output.Replace("%YARNPROGRAM%", programEncoded);
     output = output.Replace("%YARNSTRINGS%", stringsEncoded);
 
@@ -153,5 +150,5 @@ async Task CompileDirectory(DirectoryInfo sourcePath, DirectoryInfo outputPath, 
   var subDirs = sourcePath.GetDirectories();
 
   foreach (var sub in subDirs)
-    await CompileDirectory(sub, outputPath.CreateSubdirectory(sub.Name), yarnPath);
+    await CompileDirectory(sub, outputPath.CreateSubdirectory(sub.Name), silkPath);
 }
