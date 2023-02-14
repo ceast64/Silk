@@ -1,5 +1,17 @@
 # Silk
 
+# **NOT READY FOR SERIOUS USE!**
+
+# Usage
+Documentation is not yet complete, but classes have mostly complete [documentation](https://ceast64.github.io/Silk/api).
+
+CLI requires .NET 7 to build, pre-build binaries coming soon:tm:.
+
+# Goal
+Allow developers to write [Yarn Spinner](https://yarnspinner.dev/) scripts and run them within Roblox experiences.  
+A port of the entire compiler and protobuf structure to Luau would be too much work, so instead, we compile the scripts
+in a C# CLI tool as part of a Rojo workflow.
+
 ## TODO (in no particular order):
 - **WRITE A BETTER README**
 - lots of testing
@@ -16,6 +28,3 @@
 - some way to debug dialogue (plugin/in game?)
 - automate CLI build & release for tools like Aftman
 - automate module build & release to Wally
-
-Ok, you have fun with all That!
-I have a life to live for god's sake!
