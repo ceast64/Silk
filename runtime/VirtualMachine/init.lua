@@ -51,85 +51,26 @@ VirtualMachine.__index = VirtualMachine
 ---
 --- The VirtualMachine's stack, used for storing values during node execution.
 
---- Reset the VirtualMachine's internal state.
+--- Create a new VirtualMachine with parent Dialogue.
 --- @within VirtualMachine
+--- @tag constructor
 ---
---- This method resets the current node, program counter, options, and stack.
-function VirtualMachine.ResetState(self: VirtualMachine)
-	self.currentNodeName = nil
-	self.currentNode = nil
-	self.programCounter = 1
-	table.clear(self.currentOptions)
-	self.stack:clear()
-end
+--- The VirtualMachine will not have its current node set.
+--- By default, it will use the [DefaultStartNodeName](Dialogue#DefaultStartNodeName)
+--- property of the parent Dialogue.
+--- @return VirtualMachine -- The new VirtualMachine
+function VirtualMachine.new(dialogue: DialogueTypes.Dialogue): VirtualMachine
+	local self = {
+		currentNode = nil,
+		currentNodeName = nil,
+		currentOptions = {},
+		dialogue = dialogue,
+		executionState = "Stopped",
+		programCounter = 1,
+		stack = Stack.new(),
+	}
 
---- Sets the node for the VirtualMachine to run.
---- @within VirtualMachine
----
---- This method will call [ResetState](VirtualMachine#ResetState) and invoke
---- the [PrepareForLinesHandler](Dialogue#OnPrepareForLines) in the parent Dialogue.
---- @param nodeName string -- Name of the node to load
-function VirtualMachine.SetNode(self: VirtualMachine, nodeName: string)
-	local program =
-		assert(self.dialogue.Program, "Cannot load node named " .. nodeName .. ": No nodes have been loaded.")
-
-	local node = assert(program.nodes[nodeName], "No node named " .. nodeName .. " has been loaded.")
-
-	self:ResetState()
-	self.currentNode = node
-	self.currentNodeName = nodeName
-
-	if self.dialogue.OnNodeStart then
-		self.dialogue.OnNodeStart(nodeName)
-	end
-
-	if self.dialogue.OnPrepareForLines then
-		-- create a list; we will never have more lines and options
-		-- than instructions, so that's a decent capacity for the list
-		local stringIDs = table.create(#node.instructions)
-
-		-- loop over every instruction and find the ones that run a
-		-- line or add an option, these are the two instructions that
-		-- will signal a line can appear to the player
-		for _, instruction in ipairs(node.instructions) do
-			-- only RUN_LINE and ADD_OPTION
-			if instruction.opcode == 2 or instruction.opcode == 4 then
-				table.insert(stringIDs, instruction.operands[1] :: string)
-			end
-		end
-
-		self.dialogue.OnPrepareForLines(stringIDs)
-	end
-
-	return true
-end
-
---- Sets the selected option
---- @within VirtualMachine
---- @private
----
---- :::caution
---- Calling this method when [executionState](VirtualMachine#executionState)
---- is not `"WaitingOnOptionSelection"` will cause an error.
---- :::
---- @param selectedOptionID number -- Index of an option inside [currentOptions](VirtualMachine#currentOptions)
-function VirtualMachine.SetSelectedOption(self: VirtualMachine, selectedOptionID: number)
-	assert(
-		self.executionState == "WaitingOnOptionSelection",
-		"SetSelectedOption was called, but Dialogue wasn't waiting for a selection."
-	)
-
-	-- we now know what number option was selected, push the
-	-- corresponding node name to the stack
-	local selection =
-		assert(self.currentOptions[selectedOptionID], tostring(selectedOptionID) .. " is not a valid option ID")
-	self.stack:push(selection.destination)
-
-	-- we no longer need the options in the list
-	table.clear(self.currentOptions)
-
-	-- wait for the game to let us continue
-	self.executionState = "WaitingForContinue"
+	return setmetatable(self :: any, VirtualMachine) :: VirtualMachine
 end
 
 --- @within VirtualMachine
@@ -246,6 +187,18 @@ function VirtualMachine.GetLine(self: VirtualMachine, stringKey: string, express
 	end
 
 	return line
+end
+
+--- Reset the VirtualMachine's internal state.
+--- @within VirtualMachine
+---
+--- This method resets the current node, program counter, options, and stack.
+function VirtualMachine.ResetState(self: VirtualMachine)
+	self.currentNodeName = nil
+	self.currentNode = nil
+	self.programCounter = 1
+	table.clear(self.currentOptions)
+	self.stack:clear()
 end
 
 --- Executes a Yarn instruction.
@@ -484,26 +437,73 @@ function VirtualMachine.RunInstruction(self: VirtualMachine, i: YarnProgram.Inst
 	end
 end
 
---- Create a new VirtualMachine with parent Dialogue.
+--- Sets the node for the VirtualMachine to run.
 --- @within VirtualMachine
---- @tag constructor
 ---
---- The VirtualMachine will not have its current node set.
---- By default, it will use the [DefaultStartNodeName](Dialogue#DefaultStartNodeName)
---- property of the parent Dialogue.
---- @return VirtualMachine -- The new VirtualMachine
-function VirtualMachine.new(dialogue: DialogueTypes.Dialogue): VirtualMachine
-	local self = {
-		currentNode = nil,
-		currentNodeName = nil,
-		currentOptions = {},
-		dialogue = dialogue,
-		executionState = "Stopped",
-		programCounter = 1,
-		stack = Stack.new(),
-	}
+--- This method will call [ResetState](VirtualMachine#ResetState) and invoke
+--- the [PrepareForLinesHandler](Dialogue#OnPrepareForLines) in the parent Dialogue.
+--- @param nodeName string -- Name of the node to load
+function VirtualMachine.SetNode(self: VirtualMachine, nodeName: string)
+	local program =
+		assert(self.dialogue.Program, "Cannot load node named " .. nodeName .. ": No nodes have been loaded.")
 
-	return setmetatable(self :: any, VirtualMachine) :: VirtualMachine
+	local node = assert(program.nodes[nodeName], "No node named " .. nodeName .. " has been loaded.")
+
+	self:ResetState()
+	self.currentNode = node
+	self.currentNodeName = nodeName
+
+	if self.dialogue.OnNodeStart then
+		self.dialogue.OnNodeStart(nodeName)
+	end
+
+	if self.dialogue.OnPrepareForLines then
+		-- create a list; we will never have more lines and options
+		-- than instructions, so that's a decent capacity for the list
+		local stringIDs = table.create(#node.instructions)
+
+		-- loop over every instruction and find the ones that run a
+		-- line or add an option, these are the two instructions that
+		-- will signal a line can appear to the player
+		for _, instruction in ipairs(node.instructions) do
+			-- only RUN_LINE and ADD_OPTION
+			if instruction.opcode == 2 or instruction.opcode == 4 then
+				table.insert(stringIDs, instruction.operands[1] :: string)
+			end
+		end
+
+		self.dialogue.OnPrepareForLines(stringIDs)
+	end
+
+	return true
+end
+
+--- Sets the selected option
+--- @within VirtualMachine
+--- @private
+---
+--- :::caution
+--- Calling this method when [executionState](VirtualMachine#executionState)
+--- is not `"WaitingOnOptionSelection"` will cause an error.
+--- :::
+--- @param selectedOptionID number -- Index of an option inside [currentOptions](VirtualMachine#currentOptions)
+function VirtualMachine.SetSelectedOption(self: VirtualMachine, selectedOptionID: number)
+	assert(
+		self.executionState == "WaitingOnOptionSelection",
+		"SetSelectedOption was called, but Dialogue wasn't waiting for a selection."
+	)
+
+	-- we now know what number option was selected, push the
+	-- corresponding node name to the stack
+	local selection =
+		assert(self.currentOptions[selectedOptionID], tostring(selectedOptionID) .. " is not a valid option ID")
+	self.stack:push(selection.destination)
+
+	-- we no longer need the options in the list
+	table.clear(self.currentOptions)
+
+	-- wait for the game to let us continue
+	self.executionState = "WaitingForContinue"
 end
 
 return VirtualMachine

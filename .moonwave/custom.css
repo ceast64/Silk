@@ -1,0 +1,18 @@
+:root {
+  --ifm-color-primary: #6AF190;
+  --ifm-color-primary-dark: #57EF82;
+  --ifm-color-primary-darker: #44EE74;
+  --ifm-color-primary-darkest: #32EC66;
+  --ifm-color-primary-light: #A2F6BA;
+  --ifm-color-primary-lighter: #B5F8C8;
+  --ifm-color-primary-lightest: #C7FAD5;
+}
+
+.footer--dark {
+  --ifm-footer-background-color: #1c1e21;
+}
+
+:where(.button--secondary) {
+  --ifm-button-background-color: #91f5ad;
+  --ifm-button-border-color: #91f5ad;
+}

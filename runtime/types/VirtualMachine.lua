@@ -14,14 +14,14 @@ export type VirtualMachine = {
 	programCounter: number,
 	stack: Stack.Stack,
 
-	ResetState: (self: VirtualMachine) -> (),
-	SetNode: (self: VirtualMachine, nodeName: string) -> (),
-	SetSelectedOption: (self: VirtualMachine, selectedOptionID: number) -> (),
 	CheckCanContinue: (self: VirtualMachine) -> (),
 	Continue: (self: VirtualMachine) -> (),
 	FindInstructionPointForLabel: (self: VirtualMachine, labelName: string) -> number,
 	GetLine: (self: VirtualMachine, stringKey: string, expressionCount: number?) -> Dialogue.Line,
+	ResetState: (self: VirtualMachine) -> (),
 	RunInstruction: (self: VirtualMachine, i: YarnProgram.Instruction) -> (),
+	SetNode: (self: VirtualMachine, nodeName: string) -> (),
+	SetSelectedOption: (self: VirtualMachine, selectedOptionID: number) -> (),
 }
 
 --- @type ExecutionState "Stopped" | "WaitingOnOptionSelection" | "WaitingForContinue" | "DeliveringContent" | "Running"

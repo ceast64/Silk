@@ -6,13 +6,13 @@ local YarnProgram = require(script.Parent:WaitForChild("YarnProgram"))
 export type Library = {
 	functions: { [string]: Function },
 
+	DeregisterFunction: (self: Library, name: string) -> (),
+	FunctionExists: (self: Library, name: string) -> boolean,
+	GenerateUniqueVisitedVariableForNode: (self: Library, name: string) -> string,
 	GetFunction: (self: Library, name: string) -> Function,
 	ImportLibrary: (self: Library, other: Library) -> (),
 	RegisterFunction: (self: Library, name: string, func: YarnFunction) -> (),
 	RegisterStandardLibrary: (self: Library) -> (),
-	FunctionExists: (self: Library, name: string) -> boolean,
-	DeregisterFunction: (self: Library, name: string) -> (),
-	GenerateUniqueVisitedVariableForNode: (self: Library, name: string) -> string,
 }
 
 --- @type Function { argumentCount: number, func: YarnFunction }

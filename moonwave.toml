@@ -16,20 +16,41 @@ apiCategories = [
 [docusaurus]
 onBrokenLinks = "throw"
 onBrokenMarkdownLinks = "warn"
+favicon = "img/favicon.ico"
+tagline = "Silk - a (WIP) Yarn Spinner runtime for Roblox."
+
+[navbar.logo]
+alt = "Silk Logo"
+src = "img/silk-logo-dark.png"
+srcDark = "img/silk-logo-light.png"
 
 [footer]
 style = "dark"
+copyright = "Copyright © 2023 ceast64. Built with Moonwave and Docusaurus. Yarn ball icon from Flaticon."
 
 [home]
 enabled = true
-includeReadme = true
+includeReadme = true # disable once docs are finished
 
 [[home.features]]
-title = "Feature 1"
-description = "This is a feature"
-image = "https://url"
+title = "Infinitely customizable"
+description = "Silk allows close control over how your dialogue is displayed to the end user."
 
 [[home.features]]
-title = "Feature 2"
-description = "This is a second feature"
-image = "https://url"
+title = "Powered by Yarn Spinner"
+description = "Silk provides a method of running dialogue written in Yarn, an easy to learn language for writing dialogue in games."
+
+[[classOrder]]
+classes = ["Silk"]
+
+[[classOrder]]
+section = "Classes"
+classes = ["Dialogue", "Library", "VirtualMachine"]
+
+[[classOrder]]
+section = "Datatypes"
+classes = ["RawProgram", "YarnProgram"]
+
+[[classOrder]]
+section = "Libraries"
+classes = ["Base64", "Stack"]

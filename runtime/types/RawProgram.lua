@@ -4,25 +4,6 @@
 ---
 --- Typedefs for Yarn programs outputted from the CLI tool.
 
---- @type RawProgram { name: string?, nodes: { [string]: RawProgram.Node }, initial_values: { [string]: RawProgram.Operand } }
---- @within RawProgram
-export type RawProgram = {
-	name: string?,
-	nodes: { [string]: Node },
-	initialValues: { [string]: Operand }?,
-}
-
---- @type Node { name: string, instructions: {  }, labels: { [string]: number }?, tags: { string }?, sourceTextStringId: string?, headers: { RawProgram.Header }? }
---- @within RawProgram
-export type Node = {
-	name: string,
-	instructions: { Instruction },
-	labels: { [string]: number }?,
-	tags: { string }?,
-	sourceTextStringID: string?,
-	headers: { Header }?,
-}
-
 --- @type Header { key: string, value: string }
 --- @within RawProgram
 export type Header = {
@@ -35,6 +16,17 @@ export type Header = {
 export type Instruction = {
 	opcode: Opcode?,
 	operands: { Operand }?,
+}
+
+--- @type Node { name: string, instructions: {  }, labels: { [string]: number }?, tags: { string }?, sourceTextStringId: string?, headers: { RawProgram.Header }? }
+--- @within RawProgram
+export type Node = {
+	name: string,
+	instructions: { Instruction },
+	labels: { [string]: number }?,
+	tags: { string }?,
+	sourceTextStringID: string?,
+	headers: { Header }?,
 }
 
 --- @type Opcode "JUMP_TO" | "JUMP" | "RUN_LINE"	| "RUN_COMMAND"	| "ADD_OPTION"	| "SHOW_OPTIONS"	| "PUSH_STRING"	| "PUSH_FLOAT"	| "PUSH_BOOL"	| "PUSH_NULL"	| "JUMP_IF_FALSE"	| "POP"	| "CALL_FUNC" | "PUSH_VARIABLE" | "STORE_VARIABLE" | "STOP" | "RUN_NODE"
@@ -64,6 +56,14 @@ export type Operand = {
 	stringValue: string?,
 	boolValue: boolean?,
 	floatValue: number?,
+}
+
+--- @type RawProgram { name: string?, nodes: { [string]: RawProgram.Node }, initial_values: { [string]: RawProgram.Operand } }
+--- @within RawProgram
+export type RawProgram = {
+	name: string?,
+	nodes: { [string]: Node },
+	initialValues: { [string]: Operand }?,
 }
 
 --- @prop Opcodes { [Opcode]: number }

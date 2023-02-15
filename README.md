@@ -5,7 +5,7 @@
 # Usage
 Documentation is not yet complete, but classes have mostly complete [documentation](https://ceast64.github.io/Silk/api).
 
-CLI requires .NET 7 to build, pre-build binaries coming soon:tm:.
+CLI requires .NET 7 to build, pre-built binaries coming soon:tm:.
 
 # Goal
 Allow developers to write [Yarn Spinner](https://yarnspinner.dev/) scripts and run them within Roblox experiences.  
@@ -28,3 +28,5 @@ in a C# CLI tool as part of a Rojo workflow.
 - some way to debug dialogue (plugin/in game?)
 - automate CLI build & release for tools like Aftman
 - automate module build & release to Wally
+
+[Yarn ball icon from Flaticon](https://www.flaticon.com/free-icons/yarn-ball)

@@ -10,19 +10,23 @@ local StackTypes = require(types:WaitForChild("Stack"))
 local Stack = {}
 Stack.__index = Stack
 
---- @prop items { Operand }
+--- Create an empty Stack.
 --- @within Stack
+--- @tag constructor
 ---
---- The internal array containing all items on the Stack.
+--- @return Stack -- The new Stack.
+function Stack.new(): StackTypes.Stack
+	local self = {
+		items = {},
+	}
 
---- Push a value to the top of the Stack.
+	return setmetatable(self :: any, Stack) :: StackTypes.Stack
+end
+
+--- Clear the Stack's values.
 --- @within Stack
----
---- @param value Operand -- The value to push
---- @return number -- The new index of the top of the stack
-function Stack.push(self: StackTypes.Stack, value: YarnProgram.Operand): number
-	table.insert(self.items, value)
-	return #self.items
+function Stack.clear(self: StackTypes.Stack)
+	table.clear(self.items)
 end
 
 --- Peek the value at the top of the Stack.
@@ -45,23 +49,19 @@ function Stack.pop(self: StackTypes.Stack): YarnProgram.Operand
 	return value
 end
 
---- Clear the Stack's values.
+--- @prop items { Operand }
 --- @within Stack
-function Stack.clear(self: StackTypes.Stack)
-	table.clear(self.items)
-end
-
---- Create an empty Stack.
---- @within Stack
---- @tag constructor
 ---
---- @return Stack -- The new Stack.
-function Stack.new(): StackTypes.Stack
-	local self = {
-		items = {},
-	}
+--- The internal array containing all items on the Stack.
 
-	return setmetatable(self :: any, Stack) :: StackTypes.Stack
+--- Push a value to the top of the Stack.
+--- @within Stack
+---
+--- @param value Operand -- The value to push
+--- @return number -- The new index of the top of the stack
+function Stack.push(self: StackTypes.Stack, value: YarnProgram.Operand): number
+	table.insert(self.items, value)
+	return #self.items
 end
 
 return Stack

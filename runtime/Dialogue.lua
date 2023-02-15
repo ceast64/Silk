@@ -14,49 +14,6 @@ local VirtualMachineTypes = require(types:WaitForChild("VirtualMachine"))
 local VirtualMachine = require(script.Parent:WaitForChild("VirtualMachine"))
 local Library = require(script.Parent:WaitForChild("Library"))
 
--- docs for Dialogue objects
---- @prop DefaultStartNodeName string
---- @within Dialogue
----
---- The node that execution will start from.
-
---- @prop VariableStorage { [string]: Operand }
---- @within Dialogue
----
---- The dictionary that provides access to the values of variables in use by this Dialogue.
-
---- @prop IsActive boolean
---- @within Dialogue
----
---- A value indicating whether the Dialogue is currently executing Yarn instructions.
-
---- @prop Library Library
---- @within Dialogue
----
---- The "library" of functions this Dialogue's Yarn code has access to.
-
---- @prop CurrentNode string?
---- @within Dialogue
----
---- The name of the current Node being executed.
-
---- @prop NodeNames { string }
---- @within Dialogue
----
---- The names of all Nodes loaded in this Dialogue.
-
---- @prop Program YarnProgram?
---- @within Dialogue
----
---- The program being executed by this Dialogue.
-
---- @prop OnOptions OptionsHandler?
---- @within Dialogue
---- @tag callbacks
---- @tag required
----
---- Called when the Dialogue has options to deliver to the user.
-
 --- @prop OnCommand CommandHandler?
 --- @within Dialogue
 --- @tag callbacks
@@ -90,6 +47,13 @@ local Library = require(script.Parent:WaitForChild("Library"))
 ---
 --- Called when the Dialogue starts executing a Node.
 
+--- @prop OnOptions OptionsHandler?
+--- @within Dialogue
+--- @tag callbacks
+--- @tag required
+---
+--- Called when the Dialogue has options to deliver to the user.
+
 --- @prop OnPrepareForLines PrepareForLinesHandler?
 --- @within Dialogue
 --- @tag callbacks
@@ -97,20 +61,74 @@ local Library = require(script.Parent:WaitForChild("Library"))
 --- Called when the Dialogue anticipates that lines will be delivered soon.
 --- [See for more info.](Dialogue#PrepareForLinesHandler)
 
---- Returns a list of all loaded nodes in the program.
+--- @prop CurrentNode string?
 --- @within Dialogue
 ---
---- @return { string } -- The names of all loaded nodes
-function Dialogue.GetNodeNames(self: DialogueTypes.Dialogue): { string }
-	assert(self.Program, "Tried to call GetNodeNames, but no program has been loaded!")
+--- The name of the current Node being executed.
 
-	local ret = {}
+--- @prop DefaultStartNodeName string
+--- @within Dialogue
+---
+--- The node that execution will start from.
 
-	for key, _ in self.Program.nodes do
-		table.insert(ret, key)
+--- @prop IsActive boolean
+--- @within Dialogue
+---
+--- A value indicating whether the Dialogue is currently executing Yarn instructions.
+
+--- @prop Library Library
+--- @within Dialogue
+---
+--- The "library" of functions this Dialogue's Yarn code has access to.
+
+--- @prop Program YarnProgram?
+--- @within Dialogue
+---
+--- The program being executed by this Dialogue.
+
+--- @prop VariableStorage { [string]: Operand }
+--- @within Dialogue
+---
+--- The dictionary that provides access to the values of variables in use by this Dialogue.
+
+--- @prop VirtualMachine VirtualMachine
+--- @within Dialogue
+---
+--- The underlying virtual machine executing this Dialogue.
+
+--- Create a new Dialogue object with optional source program and starting node.
+--- @within Dialogue
+--- @tag constructor
+---
+--- @param source YarnProgram? -- Source program
+--- @param startNode string? -- Starting node name
+--- @param registerStandardLibrary boolean? -- Whether or not to register the standard functions for value comparison and arithmetic, defaults to true
+--- @return Dialogue -- New dialogue object
+function Dialogue.new(
+	source: YarnProgram.YarnProgram?,
+	startNode: string?,
+	registerStandardLibrary: boolean?
+): DialogueTypes.Dialogue
+	local self = {
+		DefaultStartNodeName = startNode,
+		VariableStorage = {},
+		IsActive = false,
+		Library = {},
+		CurrentNode = nil,
+		Program = source,
+	}
+
+	local new = setmetatable(self :: any, Dialogue) :: DialogueTypes.Dialogue
+	self.VirtualMachine = VirtualMachine.new(new)
+	local library = Library.new()
+
+	if registerStandardLibrary ~= false then
+		library:RegisterStandardLibrary()
 	end
 
-	return ret
+	self.Library = library
+
+	return new
 end
 
 --- Loads the nodes from the specified Program, and adds them to the nodes already loaded.
@@ -186,6 +204,22 @@ function Dialogue.ExpandSubstitutions(self: DialogueTypes.Dialogue, text: string
 	return text
 end
 
+--- Returns a list of all loaded nodes in the program.
+--- @within Dialogue
+---
+--- @return { string } -- The names of all loaded nodes
+function Dialogue.GetNodeNames(self: DialogueTypes.Dialogue): { string }
+	assert(self.Program, "Tried to call GetNodeNames, but no program has been loaded!")
+
+	local ret = {}
+
+	for key, _ in self.Program.nodes do
+		table.insert(ret, key)
+	end
+
+	return ret
+end
+
 --- Returns the tags for the node `nodeName`.
 --- @within Dialogue
 ---
@@ -234,41 +268,6 @@ end
 --- @within Dialogue
 function Dialogue.UnloadAll(self: DialogueTypes.Dialogue)
 	self.Program = nil
-end
-
---- Create a new Dialogue object with optional source program and starting node.
---- @within Dialogue
---- @tag constructor
----
---- @param source YarnProgram? -- Source program
---- @param startNode string? -- Starting node name
---- @param registerStandardLibrary boolean? -- Whether or not to register the standard functions for value comparison and arithmetic, defaults to true
---- @return Dialogue -- New dialogue object
-function Dialogue.new(
-	source: YarnProgram.YarnProgram?,
-	startNode: string?,
-	registerStandardLibrary: boolean?
-): DialogueTypes.Dialogue
-	local self = {
-		DefaultStartNodeName = startNode,
-		VariableStorage = {},
-		IsActive = false,
-		Library = {},
-		CurrentNode = nil,
-		Program = source,
-	}
-
-	local new = setmetatable(self :: any, Dialogue) :: DialogueTypes.Dialogue
-	self.VirtualMachine = VirtualMachine.new(new)
-	local library = Library.new()
-
-	if registerStandardLibrary ~= false then
-		library:RegisterStandardLibrary()
-	end
-
-	self.Library = library
-
-	return new
 end
 
 return Dialogue

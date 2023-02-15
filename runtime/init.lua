@@ -20,37 +20,37 @@ local LibraryTypes = require(types:WaitForChild("Library"))
 
 -- export these types here for ease of use in generated scripts
 
---- @type Line Line
+--- @type Line Dialogue.Line
 --- @within Silk
 ---
 --- [See full type here.](Dialogue#Line)
 export type Line = DialogueTypes.Line
 
---- @type Option Option
+--- @type Option Dialogue.Option
 --- @within Silk
 ---
 --- [See full type here.](Dialogue#Option)
 export type Option = DialogueTypes.Option
 
---- @type Program YarnProgram
+--- @type Program YarnProgram.YarnProgram
 --- @within Silk
 ---
 --- [See full type here.](YarnProgram)
 export type Program = YarnProgram.YarnProgram
 
---- @type RawProgram RawProgram
+--- @type RawProgram RawProgram.RawProgram
 --- @within Silk
 ---
 --- [See full type here.](RawProgram)
 export type RawProgram = RawProgram.RawProgram
 
---- @type YarnArgument Operand
+--- @type YarnArgument YarnProgram.Operand
 --- @within Silk
 ---
 --- [See full type here.](YarnProgram#Operand)
 export type YarnArgument = YarnProgram.Operand
 
---- @type YarnFunction YarnFunction
+--- @type YarnFunction Library.YarnFunction
 --- @within Silk
 ---
 --- [See full type here.](Library#YarnFunction)

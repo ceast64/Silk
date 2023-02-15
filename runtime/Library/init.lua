@@ -18,6 +18,47 @@ type Library = LibraryTypes.Library
 type Function = LibraryTypes.Function
 type YarnFunction = LibraryTypes.YarnFunction
 
+--- Creates a new Library.
+--- @within Library
+--- @tag constructor
+function Library.new(): Library
+	local self = {}
+	self.functions = {}
+
+	return setmetatable(self :: any, Library) :: Library
+end
+
+--- Removes a function from this Library.
+--- @within Library
+---
+--- If no function with the given name is present in the Library,
+--- this method does nothing.
+--- @param name string -- The name fo the function to remove
+function Library.DeregisterFunction(self: Library, name: string)
+	self.functions[name] = nil
+end
+
+--- Returns whether this Library contains a function named `name`.
+--- @within Library
+---
+--- @param name string -- The name of the function to check
+--- @return boolean -- Whether the function is registered
+function Library.FunctionExists(self: Library, name: string): boolean
+	return self.functions[name] ~= nil
+end
+
+--- Generates a unique tracking variable name.
+--- @within Library
+---
+--- This is intended to be used to generate names for visting.
+--- Ideally these will very reproduceable and sensible.
+--- For now it will be something terrible and easy.
+--- @param name string -- The name of the node that needs to have a tracking variable created.
+--- @return string -- The new variable name
+function Library.GenerateUniqueVisitedVariableForNode(self: Library, name: string): string
+	return "$Yarn.Internal.Visiting." .. name
+end
+
 --- @prop functions { [string]: Function }
 --- @within Library
 ---
@@ -68,47 +109,6 @@ function Library.RegisterStandardLibrary(self: Library)
 	for name, func in StandardLibrary do
 		self:RegisterFunction(name, func)
 	end
-end
-
---- Returns whether this Library contains a function named `name`.
---- @within Library
----
---- @param name string -- The name of the function to check
---- @return boolean -- Whether the function is registered
-function Library.FunctionExists(self: Library, name: string): boolean
-	return self.functions[name] ~= nil
-end
-
---- Removes a function from this Library.
---- @within Library
----
---- If no function with the given name is present in the Library,
---- this method does nothing.
---- @param name string -- The name fo the function to remove
-function Library.DeregisterFunction(self: Library, name: string)
-	self.functions[name] = nil
-end
-
---- Generates a unique tracking variable name.
---- @within Library
----
---- This is intended to be used to generate names for visting.
---- Ideally these will very reproduceable and sensible.
---- For now it will be something terrible and easy.
---- @param name string -- The name of the node that needs to have a tracking variable created.
---- @return string -- The new variable name
-function Library.GenerateUniqueVisitedVariableForNode(self: Library, name: string): string
-	return "$Yarn.Internal.Visiting." .. name
-end
-
---- Creates a new Library.
---- @within Library
---- @tag constructor
-function Library.new(): Library
-	local self = {}
-	self.functions = {}
-
-	return setmetatable(self :: any, Library) :: Library
 end
 
 return Library

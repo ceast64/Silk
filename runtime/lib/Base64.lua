@@ -26,6 +26,54 @@ local function buildStringFromCodes(values: { number }): string
 	return table.concat(chunks, "")
 end
 
+--- Decode a Base64 encoded string.
+--- @within Base64
+---
+--- @param input string -- Encoded string
+--- @return string -- Decoded data
+local function Decode(input: string): string
+	local inputLength = #input
+	local outputLength = math.ceil(inputLength / 4) * 3
+
+	local padding = 0
+	if string.byte(input, inputLength - 1) == 61 then
+		padding = 2
+	elseif string.byte(input, inputLength) == 61 then
+		padding = 1
+	end
+
+	local output = table.create(outputLength - padding, 0)
+
+	for chunkIndex = 0, (outputLength / 3) - 1 do
+		local inputIndex = chunkIndex * 4 + 1
+		local outputIndex = chunkIndex * 3 + 1
+
+		local value1, value2, value3, value4 = string.byte(input, inputIndex, inputIndex + 3)
+
+		-- Combine all variables into one 24-bit variable to be split up
+		local compound = bit32.bor(
+			bit32.lshift(lookupASCIIToValue[value1], 18),
+			bit32.lshift(lookupASCIIToValue[value2], 12),
+			bit32.lshift(lookupASCIIToValue[value3], 6),
+			lookupASCIIToValue[value4]
+		)
+
+		output[outputIndex] = bit32.rshift(compound, 16)
+		output[outputIndex + 1] = bit32.band(bit32.rshift(compound, 8), 0b11111111)
+		output[outputIndex + 2] = bit32.band(compound, 0b11111111)
+	end
+
+	if padding >= 1 then
+		output[outputLength] = nil
+
+		if padding >= 2 then
+			output[outputLength - 1] = nil
+		end
+	end
+
+	return buildStringFromCodes(output)
+end
+
 --- Encode a string to Base64.
 --- @within Base64
 ---
@@ -72,54 +120,6 @@ local function Encode(input: string): string
 		output[outputLength - 2] = lookupValueToASCII[bit32.band(bit32.rshift(chunk, 4), 0b111111)]
 		output[outputLength - 1] = lookupValueToASCII[bit32.band(bit32.lshift(chunk, 2), 0b111111)]
 		output[outputLength] = 61
-	end
-
-	return buildStringFromCodes(output)
-end
-
---- Decode a Base64 encoded string.
---- @within Base64
----
---- @param input string -- Encoded string
---- @return string -- Decoded data
-local function Decode(input: string): string
-	local inputLength = #input
-	local outputLength = math.ceil(inputLength / 4) * 3
-
-	local padding = 0
-	if string.byte(input, inputLength - 1) == 61 then
-		padding = 2
-	elseif string.byte(input, inputLength) == 61 then
-		padding = 1
-	end
-
-	local output = table.create(outputLength - padding, 0)
-
-	for chunkIndex = 0, (outputLength / 3) - 1 do
-		local inputIndex = chunkIndex * 4 + 1
-		local outputIndex = chunkIndex * 3 + 1
-
-		local value1, value2, value3, value4 = string.byte(input, inputIndex, inputIndex + 3)
-
-		-- Combine all variables into one 24-bit variable to be split up
-		local compound = bit32.bor(
-			bit32.lshift(lookupASCIIToValue[value1], 18),
-			bit32.lshift(lookupASCIIToValue[value2], 12),
-			bit32.lshift(lookupASCIIToValue[value3], 6),
-			lookupASCIIToValue[value4]
-		)
-
-		output[outputIndex] = bit32.rshift(compound, 16)
-		output[outputIndex + 1] = bit32.band(bit32.rshift(compound, 8), 0b11111111)
-		output[outputIndex + 2] = bit32.band(compound, 0b11111111)
-	end
-
-	if padding >= 1 then
-		output[outputLength] = nil
-
-		if padding >= 2 then
-			output[outputLength - 1] = nil
-		end
 	end
 
 	return buildStringFromCodes(output)

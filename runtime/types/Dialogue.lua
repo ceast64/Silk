@@ -5,65 +5,31 @@ local YarnProgram = require(script.Parent:WaitForChild("YarnProgram"))
 local Library = require(script.Parent:WaitForChild("Library"))
 
 export type Dialogue = {
+	CurrentNode: string?,
 	DefaultStartNodeName: string?,
-	VariableStorage: { [string]: YarnProgram.Operand },
 	IsActive: boolean,
 	Library: Library.Library,
-	CurrentNode: string?,
-
 	Program: YarnProgram.YarnProgram?,
+	VariableStorage: { [string]: YarnProgram.Operand },
 	VirtualMachine: any,
 
-	OnOptions: OptionsHandler?,
 	OnCommand: CommandHandler?,
 	OnDialogueComplete: DialogueCompleteHandler?,
 	OnLine: LineHandler?,
 	OnNodeComplete: NodeCompleteHandler?,
 	OnNodeStart: NodeStartHandler?,
+	OnOptions: OptionsHandler?,
 	OnPrepareForLines: PrepareForLinesHandler?,
 
-	GetNodeNames: (self: Dialogue) -> { string },
 	AddProgram: (self: Dialogue, program: YarnProgram.YarnProgram) -> (),
 	Continue: (self: Dialogue) -> (),
 	ExpandSubstitutions: (self: Dialogue, text: string, substitutions: { string }?) -> string,
+	GetNodeNames: (self: Dialogue) -> { string },
 	GetTagsForNode: (self: Dialogue, nodeName: string) -> { string }?,
 	SetProgram: (self: Dialogue, program: YarnProgram.YarnProgram) -> (),
 	Stop: (self: Dialogue) -> (),
 	UnloadAll: (self: Dialogue) -> (),
 }
-
---- @type Line { id: string, substitutions: { string }? }
---- @within Dialogue
----
---- Represents a line of Yarn dialogue.
---- :::caution
---- When the game receives a Line, it should do the following things to prepare the line for presentation to the user.
---- - Use the value in the ID property to look up the appropriate user-facing text in the string table.
---- - Use `ExpandSubstitutions()` to replace all substitutions in the user-facing text.
---- - Parse any markup in the line.
---- :::
-export type Line = {
-	id: string,
-	substitutions: { string }?,
-}
-
---- @type Option { line: Line, destination: string, enabled: boolean }
---- @within Dialogue
----
---- Represents an option in a Yarn dialogue. The `destination` property is
---- the node ID to run if the option is selected.
-export type Option = {
-	line: Line,
-	index: number,
-	destination: string,
-	enabled: boolean,
-}
-
---- @type OptionsHandler ({ Option }) -> ()
---- @within Dialogue
---- @tag handlers
-export type OptionsHandler = ({ Option }) -> ()
-
 --- @type CommandHandler (text: string) -> ()
 --- @within Dialogue
 --- @tag handlers
@@ -99,6 +65,11 @@ export type NodeCompleteHandler = (name: string) -> ()
 --- Called by the Dialogue when it begins executing a Node.
 export type NodeStartHandler = (name: string) -> ()
 
+--- @type OptionsHandler ({ Option }) -> ()
+--- @within Dialogue
+--- @tag handlers
+export type OptionsHandler = ({ Option }) -> ()
+
 --- @type PrepareForLinesHandler (lineIDs: { string }) -> ()
 --- @within Dialogue
 --- @tag handlers
@@ -111,5 +82,32 @@ export type NodeStartHandler = (name: string) -> ()
 --- :::
 --- This method may be called any number of times during a dialogue session.
 export type PrepareForLinesHandler = (lineIDs: { string }) -> ()
+
+--- @type Line { id: string, substitutions: { string }? }
+--- @within Dialogue
+---
+--- Represents a line of Yarn dialogue.
+--- :::caution
+--- When the game receives a Line, it should do the following things to prepare the line for presentation to the user.
+--- - Use the value in the ID property to look up the appropriate user-facing text in the string table.
+--- - Use `ExpandSubstitutions()` to replace all substitutions in the user-facing text.
+--- - Parse any markup in the line.
+--- :::
+export type Line = {
+	id: string,
+	substitutions: { string }?,
+}
+
+--- @type Option { line: Line, destination: string, enabled: boolean }
+--- @within Dialogue
+---
+--- Represents an option in a Yarn dialogue. The `destination` property is
+--- the node ID to run if the option is selected.
+export type Option = {
+	line: Line,
+	index: number,
+	destination: string,
+	enabled: boolean,
+}
 
 return {}
