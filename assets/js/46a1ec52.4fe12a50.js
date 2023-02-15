@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkdocs=self.webpackChunkdocs||[]).push([[520],{63891:s=>{s.exports=JSON.parse('{"sourceUrl":"https://github.com/ceast64/Silk/blob/main","baseUrl":"/Silk/","classOrder":[],"apiCategories":["callbacks","handlers","libraries","constructor","required"]}')}}]);
