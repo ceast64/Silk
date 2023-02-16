@@ -122,7 +122,7 @@ function Dialogue.new(
 	self.VirtualMachine = VirtualMachine.new(new)
 	local library = Library.new()
 
-	if registerStandardLibrary ~= false then
+	if registerStandardLibrary then
 		library:RegisterStandardLibrary()
 	end
 
