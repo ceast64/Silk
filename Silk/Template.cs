@@ -11,7 +11,7 @@ internal static class Template
 
       local Silk = require(%SILKPATH%)
 
-      local decoded = HttpService:JSONDecode(Yarn.Base64.Decode("%YARNPROGRAM%"))
+      local decoded = HttpService:JSONDecode(Silk.Base64.Decode("%YARNPROGRAM%"))
 
       local generate: () -> Silk.Program
       generate = function()
