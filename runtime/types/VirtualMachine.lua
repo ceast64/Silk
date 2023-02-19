@@ -6,13 +6,13 @@ local Stack = require(script.Parent:WaitForChild("Stack"))
 local YarnProgram = require(script.Parent:WaitForChild("YarnProgram"))
 
 export type VirtualMachine = {
-	currentNode: YarnProgram.Node?,
-	currentNodeName: string?,
-	currentOptions: { Dialogue.Option },
-	dialogue: Dialogue.Dialogue,
-	executionState: ExecutionState,
-	programCounter: number,
-	stack: Stack.Stack,
+	CurrentNode: YarnProgram.Node?,
+	CurrentNodeName: string?,
+	CurrentOptions: { Dialogue.Option },
+	Dialogue: Dialogue.Dialogue,
+	ExecutionState: ExecutionState,
+	ProgramCounter: number,
+	Stack: Stack.Stack,
 
 	CheckCanContinue: (self: VirtualMachine) -> (),
 	Continue: (self: VirtualMachine) -> (),

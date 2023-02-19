@@ -3,9 +3,11 @@
 
 local YarnProgram = require(script.Parent:WaitForChild("YarnProgram"))
 local Library = require(script.Parent:WaitForChild("Library"))
+local Stack = require(script.Parent:WaitForChild("Stack"))
 
 export type Dialogue = {
 	CurrentNode: string?,
+	DebugMode: boolean?,
 	DefaultStartNodeName: string?,
 	IsActive: boolean,
 	Library: Library.Library,
@@ -14,6 +16,7 @@ export type Dialogue = {
 	VirtualMachine: any,
 
 	OnCommand: CommandHandler?,
+	OnDebug: DebugHandler?,
 	OnDialogueComplete: DialogueCompleteHandler?,
 	OnLine: LineHandler?,
 	OnNodeComplete: NodeCompleteHandler?,
@@ -24,9 +27,13 @@ export type Dialogue = {
 	AddProgram: (self: Dialogue, program: YarnProgram.YarnProgram) -> (),
 	Continue: (self: Dialogue) -> (),
 	ExpandSubstitutions: (self: Dialogue, text: string, substitutions: { string }?) -> string,
+	GetExecutionState: (
+		self: Dialogue
+	) -> "Stopped" | "WaitingOnOptionSelection" | "WaitingForContinue" | "DeliveringContent" | "Running",
 	GetNodeNames: (self: Dialogue) -> { string },
 	GetTagsForNode: (self: Dialogue, nodeName: string) -> { string }?,
 	SetProgram: (self: Dialogue, program: YarnProgram.YarnProgram) -> (),
+	SetSelectedOption: (self: Dialogue, selectedOptionID: number) -> (),
 	Stop: (self: Dialogue) -> (),
 	UnloadAll: (self: Dialogue) -> (),
 }
@@ -36,6 +43,16 @@ export type Dialogue = {
 ---
 --- Called by the Dialogue whenever a command is executed.
 export type CommandHandler = (text: string) -> ()
+
+--- @type DebugHandler (i: Instruction, stack: Stack) -> ()
+--- @within Dialogue
+--- @tag handlers
+--- @private
+---
+--- Called by the [VirtualMachine](VirtualMachine) when [DebugMode](Dialogue#DebugMode) is enabled.
+--- Contains debug information about the current instruction
+--- and the stack.
+export type DebugHandler = (i: YarnProgram.Instruction, stack: Stack.Stack) -> ()
 
 --- @type DialogueCompleteHandler () -> ()
 --- @within Dialogue

@@ -3,6 +3,8 @@
 --- @class Dialogue
 ---
 --- Dialogue class used for executing a Yarn script.
+--- This class wraps some methods from the underlying
+--- [VirtualMachine](VirtualMachine) for ease of use.
 local Dialogue = {}
 Dialogue.__index = Dialogue
 
@@ -20,6 +22,14 @@ local Library = require(script.Parent:WaitForChild("Library"))
 --- @tag required
 ---
 --- Called when the Dialogue has a command to execute.
+
+--- @prop OnDebug DebugHandler?
+--- @within Dialogue
+--- @tag callbacks
+--- @private
+---
+--- Called by the virtual machine when [DebugMode](Dialogue#DebugMode)
+--- is enabled.
 
 --- @prop OnDialogueComplete DialogueCompleteHandler?
 --- @within Dialogue
@@ -65,6 +75,14 @@ local Library = require(script.Parent:WaitForChild("Library"))
 --- @within Dialogue
 ---
 --- The name of the current Node being executed.
+
+--- @prop DebugMode boolean?
+--- @within Dialogue
+--- @private
+---
+--- When `true`, the virtual machine will wait for [`Continue()`](Dialogue#Continue)
+--- to be called before executing the next instruction, even if no content or options
+--- have been delivered. It will also
 
 --- @prop DefaultStartNodeName string
 --- @within Dialogue
@@ -204,6 +222,19 @@ function Dialogue.ExpandSubstitutions(self: DialogueTypes.Dialogue, text: string
 	return text
 end
 
+--- Retrieves the execution state of the Dialogue.
+--- @within Dialogue
+---
+--- This reflects the current action of the virtual machine, whether it is
+--- executing instructions, delivering content, or waiting for user
+--- interaction.
+--- @return ExecutionState
+function Dialogue.GetExecutionState(
+	self: DialogueTypes.Dialogue
+): "Stopped" | "WaitingOnOptionSelection" | "WaitingForContinue" | "DeliveringContent" | "Running"
+	return (self.VirtualMachine :: VirtualMachineTypes.VirtualMachine).ExecutionState
+end
+
 --- Returns a list of all loaded nodes in the program.
 --- @within Dialogue
 ---
@@ -254,6 +285,18 @@ function Dialogue.SetProgram(self: DialogueTypes.Dialogue, program: YarnProgram.
 	self.Program = program
 end
 
+--- Set the selected dialogue option.
+--- @within Dialogue
+---
+--- :::caution
+--- Calling this method when [executionState](VirtualMachine#executionState)
+--- is not `"WaitingOnOptionSelection"` will cause an error.
+--- :::
+--- @param selectedOptionID number -- Index of an option inside the options table sent by [OnOptions](Dialogue#OnOptions)
+function Dialogue.SetSelectedOption(self: DialogueTypes.Dialogue, selectedOptionID: number)
+	(self.VirtualMachine :: VirtualMachineTypes.VirtualMachine):SetSelectedOption(selectedOptionID)
+end
+
 --- Immediately stops the `Dialogue`.
 --- @within Dialogue
 ---
@@ -261,7 +304,7 @@ end
 --- be called if the dialogue is ended by calling [Stop](Dialogue#Stop).
 function Dialogue.Stop(self: DialogueTypes.Dialogue)
 	local vm = self.VirtualMachine :: VirtualMachineTypes.VirtualMachine
-	vm.executionState = "Stopped"
+	vm.ExecutionState = "Stopped"
 end
 
 --- Unloads all nodes from the `Dialogue`.

@@ -15,38 +15,38 @@ type VirtualMachine = VirtualMachineTypes.VirtualMachine
 local VirtualMachine = {}
 VirtualMachine.__index = VirtualMachine
 
---- @prop currentNode Node?
+--- @prop CurrentNode Node?
 --- @within VirtualMachine
 ---
 --- The current node the VirtualMachine is executing.
 
---- @prop currentNodeName string?
+--- @prop CurrentNodeName string?
 --- @within VirtualMachine
 ---
 --- The name of the current node the VirtualMachine is executing.
 
---- @prop currentOptions { Option }
+--- @prop CurrentOptions { Option }
 --- @within VirtualMachine
 ---
 --- The current options the VirtualMachine has encountered.
 
---- @prop dialogue Dialogue
+--- @prop Dialogue Dialogue
 --- @within VirtualMachine
 ---
 --- The parent Dialogue for this VirtualMachine.
 
---- @prop executionState ExecutionState
+--- @prop ExecutionState ExecutionState
 --- @within VirtualMachine
 ---
 --- The VirtualMachine's current execution state.
 --- See the docs for [ExecutionState](VirtualMachine#ExecutionState) for more info.
 
---- @prop programCounter number
+--- @prop ProgramCounter number
 --- @within VirtualMachine
 ---
 --- The index of the instruction being or to be executed by the VirtualMachine.
 
---- @prop stack Stack
+--- @prop Stack Stack
 --- @within VirtualMachine
 ---
 --- The VirtualMachine's stack, used for storing values during node execution.
@@ -61,13 +61,13 @@ VirtualMachine.__index = VirtualMachine
 --- @return VirtualMachine -- The new VirtualMachine
 function VirtualMachine.new(dialogue: DialogueTypes.Dialogue): VirtualMachine
 	local self = {
-		currentNode = nil,
-		currentNodeName = nil,
-		currentOptions = {},
-		dialogue = dialogue,
-		executionState = "Stopped",
-		programCounter = 1,
-		stack = Stack.new(),
+		CurrentNode = nil,
+		CurrentNodeName = nil,
+		CurrentOptions = {},
+		Dialogue = dialogue,
+		ExecutionState = "Stopped",
+		ProgramCounter = 1,
+		Stack = Stack.new(),
 	}
 
 	return setmetatable(self :: any, VirtualMachine) :: VirtualMachine
@@ -79,13 +79,13 @@ end
 --- where [Continue](VirtualMachine#Continue) can be called.
 --- Errors if it can't.
 function VirtualMachine.CheckCanContinue(self: VirtualMachine)
-	assert(self.currentNode, "Cannot continue running dialogue. No node has been selected.")
+	assert(self.CurrentNode, "Cannot continue running dialogue. No node has been selected.")
 	assert(
-		self.executionState ~= "WaitingOnOptionSelection",
+		self.ExecutionState ~= "WaitingOnOptionSelection",
 		"Cannot continue running dialogue. Still waiting on option selection."
 	)
 
-	local dialogue = self.dialogue
+	local dialogue = self.Dialogue
 	assert(dialogue.OnLine, "Cannot continue running dialogue. OnLine has not been set.")
 	assert(dialogue.OnOptions, "Cannot continue running dialogue. OnOptions has not been set.")
 	assert(dialogue.OnCommand, "Cannot continue running dialogue. OnCommand has not been set.")
@@ -97,9 +97,9 @@ end
 ---
 --- Calls [CheckCanContinue](VirtualMachine#CheckCanContinue) internally.
 function VirtualMachine.Continue(self: VirtualMachine)
-	if self.currentNode == nil or self.currentNodeName == nil then
+	if self.CurrentNode == nil or self.CurrentNodeName == nil then
 		local defaultNode = assert(
-			self.dialogue.DefaultStartNodeName,
+			self.Dialogue.DefaultStartNodeName,
 			"Cannot continue running dialogue. Current node has not been set and the DefaultStartNodeName property of the parent Dialogue is nil."
 		)
 
@@ -108,38 +108,49 @@ function VirtualMachine.Continue(self: VirtualMachine)
 
 	self:CheckCanContinue()
 
-	if self.executionState == "DeliveringContent" then
+	if self.ExecutionState == "DeliveringContent" then
 		-- we were delivering a line, option set, or command and
 		-- the client has called Continue() on us. We're still
 		-- inside the stack frame of the client callback, so to
 		-- avoid recursion, we'll note that our state has changed
 		-- back to Running; when we've left the callback, we'll
 		-- continue executing instructions.
-		self.executionState = "Running"
+		self.ExecutionState = "Running"
 		return
 	end
 
-	self.executionState = "Running"
+	self.ExecutionState = "Running"
 
 	-- execute instructions until something forces us to stop
-	while self.executionState == "Running" do
-		local currentInstruction = assert(self.currentNode).instructions[self.programCounter]
+	while self.ExecutionState == "Running" do
+		local currentInstruction = assert(self.CurrentNode).instructions[self.ProgramCounter]
+
+		if self.Dialogue.DebugMode and self.Dialogue.OnDebug then
+			self.Dialogue.OnDebug(currentInstruction, self.Stack)
+		end
+
 		self:RunInstruction(currentInstruction)
 
-		self.programCounter += 1
-		if self.programCounter >= #self.currentNode.instructions then
+		self.ProgramCounter += 1
+		if self.ProgramCounter >= #self.CurrentNode.instructions then
 			-- there are no more instructions, and we haven't jumped, so this is the end
-			local dialogue = self.dialogue
+			local dialogue = self.Dialogue
 
 			if dialogue.OnNodeComplete then
-				dialogue.OnNodeComplete(self.currentNode.name)
+				dialogue.OnNodeComplete(self.CurrentNode.name)
 			end
 
-			self.executionState = "Stopped"
+			self.ExecutionState = "Stopped"
 
 			if dialogue.OnDialogueComplete then
 				dialogue.OnDialogueComplete()
 			end
+		end
+
+		-- execute instructions one at a time by calling Continue()
+		-- when debug mode enabled
+		if self.Dialogue.DebugMode then
+			return
 		end
 	end
 end
@@ -151,11 +162,11 @@ end
 --- @param labelName string -- The name of the node to search for
 --- @return number -- The instruction number of the label
 function VirtualMachine.FindInstructionPointForLabel(self: VirtualMachine, labelName: string): number
-	assert(self.currentNode, "The current node is nil!")
+	assert(self.CurrentNode, "The current node is nil!")
 
 	return assert(
-		self.currentNode.labels[labelName],
-		"Unknown label " .. labelName .. " in node " .. self.currentNode.name
+		self.CurrentNode.labels[labelName],
+		"Unknown label " .. labelName .. " in node " .. self.CurrentNode.name
 	) + 1
 end
 
@@ -180,7 +191,7 @@ function VirtualMachine.GetLine(self: VirtualMachine, stringKey: string, express
 		local strings = table.create(expressionCount) :: { string }
 
 		for expressionIndex = expressionCount, 1, -1 do
-			strings[expressionIndex] = self.stack:pop() :: string
+			strings[expressionIndex] = self.Stack:pop() :: string
 		end
 
 		line.substitutions = strings
@@ -194,11 +205,11 @@ end
 ---
 --- This method resets the current node, program counter, options, and stack.
 function VirtualMachine.ResetState(self: VirtualMachine)
-	self.currentNodeName = nil
-	self.currentNode = nil
-	self.programCounter = 1
-	table.clear(self.currentOptions)
-	self.stack:clear()
+	self.CurrentNodeName = nil
+	self.CurrentNode = nil
+	self.ProgramCounter = 1
+	table.clear(self.CurrentOptions)
+	self.Stack:clear()
 end
 
 --- Executes a Yarn instruction.
@@ -209,33 +220,33 @@ end
 --- @param i Instruction -- Instruction to execute
 function VirtualMachine.RunInstruction(self: VirtualMachine, i: YarnProgram.Instruction)
 	local op = i.opcode
-	local dialogue = self.dialogue
+	local dialogue = self.Dialogue
 
 	if op < 8 then
 		if op < 3 then
 			if op < 1 then
 				-- JUMP_TO
-				self.programCounter = self:FindInstructionPointForLabel(i.operands[1] :: string) - 1
+				self.ProgramCounter = self:FindInstructionPointForLabel(i.operands[1] :: string) - 1
 			elseif op > 1 then
 				-- RUN_LINE
 				local line = self:GetLine(i.operands[1] :: string, i.operands[2] :: number)
 
 				-- suspend execution, we're about to deliver content
-				self.executionState = "DeliveringContent"
+				self.ExecutionState = "DeliveringContent"
 
 				if dialogue.OnLine then
 					dialogue.OnLine(line)
 				end
 
-				if self.executionState == "DeliveringContent" then
+				if self.ExecutionState == "DeliveringContent" then
 					-- the client didn't call Continue, so we'll
 					-- wait here
-					self.executionState = "WaitingForContinue"
+					self.ExecutionState = "WaitingForContinue"
 				end
 			else
 				-- JUMP
-				local jumpDestination = self.stack:peek() :: string
-				self.programCounter = self:FindInstructionPointForLabel(jumpDestination) - 1
+				local jumpDestination = self.Stack:peek() :: string
+				self.ProgramCounter = self:FindInstructionPointForLabel(jumpDestination) - 1
 			end
 		elseif op > 3 then
 			if op < 6 then
@@ -243,8 +254,8 @@ function VirtualMachine.RunInstruction(self: VirtualMachine, i: YarnProgram.Inst
 					-- SHOW_OPTIONS
 
 					-- if we have no options to show, immediately stop
-					if #self.currentOptions < 1 then
-						self.executionState = "Stopped"
+					if #self.CurrentOptions < 1 then
+						self.ExecutionState = "Stopped"
 
 						if dialogue.OnDialogueComplete then
 							dialogue.OnDialogueComplete()
@@ -254,17 +265,17 @@ function VirtualMachine.RunInstruction(self: VirtualMachine, i: YarnProgram.Inst
 					end
 
 					-- present the list of options to the user and let them pick
-					self.executionState = "WaitingOnOptionSelection"
+					self.ExecutionState = "WaitingOnOptionSelection"
 
 					if dialogue.OnOptions then
-						dialogue.OnOptions(self.currentOptions)
+						dialogue.OnOptions(self.CurrentOptions)
 					end
 
-					if self.executionState == "WaitingForContinue" then
+					if self.ExecutionState == "WaitingForContinue" then
 						-- we are no longer waiting on an option selection
 						-- the options handler must have called SetSelectedOption!
 						-- continue running immediateley
-						self.executionState = "Running"
+						self.ExecutionState = "Running"
 					end
 				else
 					-- ADD_OPTION
@@ -277,22 +288,22 @@ function VirtualMachine.RunInstruction(self: VirtualMachine, i: YarnProgram.Inst
 
 					local hasLineCondition = i.operands[4]
 					if hasLineCondition then
-						lineConditionsPassed = self.stack:pop() :: boolean
+						lineConditionsPassed = self.Stack:pop() :: boolean
 					end
 
-					table.insert(self.currentOptions, {
+					table.insert(self.CurrentOptions, {
 						line = line,
-						index = #self.currentOptions + 1,
+						index = #self.CurrentOptions + 1,
 						destination = i.operands[2] :: string,
 						enabled = lineConditionsPassed,
 					})
 				end
 			elseif op > 6 then
 				-- PUSH_FLOAT
-				self.stack:push(i.operands[1] :: number)
+				self.Stack:push(i.operands[1] :: number)
 			else
 				-- PUSH_STRING
-				self.stack:push(i.operands[1] :: string)
+				self.Stack:push(i.operands[1] :: string)
 			end
 		else
 			-- RUN_COMMAND
@@ -302,21 +313,21 @@ function VirtualMachine.RunInstruction(self: VirtualMachine, i: YarnProgram.Inst
 			local expressionCount = i.operands[2] :: number
 			if expressionCount then
 				for i = expressionCount, 1, -1 do
-					local substitution = self.stack:pop() :: string
+					local substitution = self.Stack:pop() :: string
 					commandText = string.gsub(commandText, "{" .. i - 1 .. "}", substitution)
 				end
 			end
 
-			self.executionState = "DeliveringContent"
+			self.ExecutionState = "DeliveringContent"
 
 			-- run the command
 			if dialogue.OnCommand then
 				dialogue.OnCommand(commandText)
 			end
 
-			if self.executionState == "DeliveringContent" then
+			if self.ExecutionState == "DeliveringContent" then
 				-- the client didn't call Continue, so we'll wait here
-				self.executionState = "WaitingForContinue"
+				self.ExecutionState = "WaitingForContinue"
 			end
 		end
 	elseif op > 8 then
@@ -329,7 +340,7 @@ function VirtualMachine.RunInstruction(self: VirtualMachine, i: YarnProgram.Inst
 			elseif op > 10 then
 				if op < 12 then
 					-- POP
-					self.stack:pop()
+					self.Stack:pop()
 				else
 					-- CALL_FUNC
 					local functionName = i.operands[1] :: string
@@ -341,7 +352,7 @@ function VirtualMachine.RunInstruction(self: VirtualMachine, i: YarnProgram.Inst
 					)
 
 					local expectedParamCount = func.argumentCount
-					local actualParamCount = math.floor(self.stack:pop() :: number)
+					local actualParamCount = math.floor(self.Stack:pop() :: number)
 
 					if actualParamCount ~= expectedParamCount then
 						error(
@@ -357,25 +368,25 @@ function VirtualMachine.RunInstruction(self: VirtualMachine, i: YarnProgram.Inst
 					local params = table.create(actualParamCount)
 
 					for param = actualParamCount, 1, -1 do
-						params[param] = self.stack:pop()
+						params[param] = self.Stack:pop()
 					end
 
 					local ret = func.func(table.unpack(params))
 
 					if ret ~= nil then
-						self.stack:push(ret)
+						self.Stack:push(ret)
 					end
 				end
 			else
 				-- JUMP_IF_FALSE
-				if self.stack:peek() == false then
-					self.programCounter = self:FindInstructionPointForLabel(i.operands[1] :: string) - 1
+				if self.Stack:peek() == false then
+					self.ProgramCounter = self:FindInstructionPointForLabel(i.operands[1] :: string) - 1
 				end
 			end
 		elseif op > 13 then
 			if op < 15 then
 				-- STORE_VARIABLE
-				local topValue = self.stack:peek()
+				local topValue = self.Stack:peek()
 				local destinationVariableName = i.operands[1] :: string
 
 				dialogue.VariableStorage[destinationVariableName] = topValue
@@ -384,10 +395,10 @@ function VirtualMachine.RunInstruction(self: VirtualMachine, i: YarnProgram.Inst
 
 				-- pop a string from the stack, and jump to a node
 				-- with that name
-				local nodeName = self.stack:pop() :: string
+				local nodeName = self.Stack:pop() :: string
 
 				if dialogue.OnNodeComplete then
-					dialogue.OnNodeComplete(assert(self.currentNodeName))
+					dialogue.OnNodeComplete(assert(self.CurrentNodeName))
 				end
 
 				self:SetNode(nodeName)
@@ -395,18 +406,18 @@ function VirtualMachine.RunInstruction(self: VirtualMachine, i: YarnProgram.Inst
 				-- decrement program counter here, because it will
 				-- be incremented when this function returns, and
 				-- would mean skipping the first instruction
-				self.programCounter -= 1
+				self.ProgramCounter -= 1
 			else
 				-- STOP
 				if dialogue.OnNodeComplete then
-					dialogue.OnNodeComplete(assert(self.currentNodeName))
+					dialogue.OnNodeComplete(assert(self.CurrentNodeName))
 				end
 
 				if dialogue.OnDialogueComplete then
 					dialogue.OnDialogueComplete()
 				end
 
-				self.executionState = "Stopped"
+				self.ExecutionState = "Stopped"
 			end
 		else
 			-- PUSH_VARIABLE
@@ -429,11 +440,11 @@ function VirtualMachine.RunInstruction(self: VirtualMachine, i: YarnProgram.Inst
 				"Loaded variable " .. variableName .. "has an invalid type."
 			)
 
-			self.stack:push(loadedValue)
+			self.Stack:push(loadedValue)
 		end
 	else
 		-- PUSH_BOOL
-		self.stack:push(i.operands[1])
+		self.Stack:push(i.operands[1])
 	end
 end
 
@@ -445,19 +456,19 @@ end
 --- @param nodeName string -- Name of the node to load
 function VirtualMachine.SetNode(self: VirtualMachine, nodeName: string)
 	local program =
-		assert(self.dialogue.Program, "Cannot load node named " .. nodeName .. ": No nodes have been loaded.")
+		assert(self.Dialogue.Program, "Cannot load node named " .. nodeName .. ": No nodes have been loaded.")
 
 	local node = assert(program.nodes[nodeName], "No node named " .. nodeName .. " has been loaded.")
 
 	self:ResetState()
-	self.currentNode = node
-	self.currentNodeName = nodeName
+	self.CurrentNode = node
+	self.CurrentNodeName = nodeName
 
-	if self.dialogue.OnNodeStart then
-		self.dialogue.OnNodeStart(nodeName)
+	if self.Dialogue.OnNodeStart then
+		self.Dialogue.OnNodeStart(nodeName)
 	end
 
-	if self.dialogue.OnPrepareForLines then
+	if self.Dialogue.OnPrepareForLines then
 		-- create a list; we will never have more lines and options
 		-- than instructions, so that's a decent capacity for the list
 		local stringIDs = table.create(#node.instructions)
@@ -472,7 +483,7 @@ function VirtualMachine.SetNode(self: VirtualMachine, nodeName: string)
 			end
 		end
 
-		self.dialogue.OnPrepareForLines(stringIDs)
+		self.Dialogue.OnPrepareForLines(stringIDs)
 	end
 
 	return true
@@ -483,27 +494,27 @@ end
 --- @private
 ---
 --- :::caution
---- Calling this method when [executionState](VirtualMachine#executionState)
+--- Calling this method when [ExecutionState](VirtualMachine#ExecutionState)
 --- is not `"WaitingOnOptionSelection"` will cause an error.
 --- :::
 --- @param selectedOptionID number -- Index of an option inside [currentOptions](VirtualMachine#currentOptions)
 function VirtualMachine.SetSelectedOption(self: VirtualMachine, selectedOptionID: number)
 	assert(
-		self.executionState == "WaitingOnOptionSelection",
+		self.ExecutionState == "WaitingOnOptionSelection",
 		"SetSelectedOption was called, but Dialogue wasn't waiting for a selection."
 	)
 
 	-- we now know what number option was selected, push the
 	-- corresponding node name to the stack
 	local selection =
-		assert(self.currentOptions[selectedOptionID], tostring(selectedOptionID) .. " is not a valid option ID")
-	self.stack:push(selection.destination)
+		assert(self.CurrentOptions[selectedOptionID], tostring(selectedOptionID) .. " is not a valid option ID")
+	self.Stack:push(selection.destination)
 
 	-- we no longer need the options in the list
-	table.clear(self.currentOptions)
+	table.clear(self.CurrentOptions)
 
 	-- wait for the game to let us continue
-	self.executionState = "WaitingForContinue"
+	self.ExecutionState = "WaitingForContinue"
 end
 
 return VirtualMachine
