@@ -1,4 +1,7 @@
-# Silk
+<img alt="Silk" width="256" height="256" src=".moonwave/static/img/silk-logo-light.png">
+
+Silk
+===
 
 # **NOT READY FOR SERIOUS USE!**
 
