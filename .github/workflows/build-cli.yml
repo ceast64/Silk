@@ -1,0 +1,39 @@
+name: Build CLI
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'CLI/**'
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        runtime: [win-x64, osx-x64, osx-arm64, linux-x64]
+
+    steps:
+      - name: Setup .NET Core SDK
+        uses: actions/setup-dotnet@v3.0.3
+        with:
+          dotnet-version: '7.0.x'
+    
+      - name: Checkout
+        uses: actions/checkout@v3.3.0
+
+      - name: Restore projects
+        run: dotnet restore
+
+      - name: Build
+        run: dotnet build CLI/Silk.csproj --configuration Debug --runtime ${{ matrix.runtime }} --no-self-contained
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: Silk-cli-${{ matrix.runtime }}
+          path: CLI/bin/Debug/net7.0/${{ matrix.runtime }}
