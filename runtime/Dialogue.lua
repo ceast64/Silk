@@ -168,7 +168,7 @@ function Dialogue.AddProgram(self: DialogueTypes.Dialogue, program: YarnProgram.
 	local clone2 = program.clone()
 
 	for key, node in clone2.nodes do
-		assert(clone.nodes[key] ~= nil, "This program already contains a node with the name " .. key)
+		assert(clone.nodes[key] ~= nil, `This program already contains a node with the name {key}`)
 		clone.nodes[key] = node
 	end
 
@@ -216,7 +216,7 @@ end
 --- @return string -- `text`, with the content from `substitutions` inserted.
 function Dialogue.ExpandSubstitutions(self: DialogueTypes.Dialogue, text: string, substitutions: { string }?): string
 	for index, substitution in ipairs(substitutions or {}) do
-		text = string.gsub(text, "{" .. index - 1 .. "}", substitution)
+		text = string.gsub(text, `\{{index - 1}}`, substitution)
 	end
 
 	return text

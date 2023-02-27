@@ -164,10 +164,7 @@ end
 function VirtualMachine.FindInstructionPointForLabel(self: VirtualMachine, labelName: string): number
 	assert(self.CurrentNode, "The current node is nil!")
 
-	return assert(
-		self.CurrentNode.labels[labelName],
-		"Unknown label " .. labelName .. " in node " .. self.CurrentNode.name
-	) + 1
+	return assert(self.CurrentNode.labels[labelName], `Unknown label {labelName} in node {self.CurrentNode.name}`) + 1
 end
 
 --- Return a Line with the given string ID and expression count.
@@ -314,7 +311,7 @@ function VirtualMachine.RunInstruction(self: VirtualMachine, i: YarnProgram.Inst
 			if expressionCount then
 				for i = expressionCount, 1, -1 do
 					local substitution = self.Stack:pop() :: string
-					commandText = string.gsub(commandText, "{" .. i - 1 .. "}", substitution)
+					commandText = string.gsub(commandText, `\{{i - 1}}`, substitution)
 				end
 			end
 
@@ -348,7 +345,7 @@ function VirtualMachine.RunInstruction(self: VirtualMachine, i: YarnProgram.Inst
 					-- get the function from the Library
 					local func = assert(
 						dialogue.Library:GetFunction(functionName),
-						"The function " .. functionName .. " does not exist!"
+						`The function {functionName} does not exist!`
 					)
 
 					local expectedParamCount = func.argumentCount
@@ -356,12 +353,7 @@ function VirtualMachine.RunInstruction(self: VirtualMachine, i: YarnProgram.Inst
 
 					if actualParamCount ~= expectedParamCount then
 						error(
-							string.format(
-								"Function %s expected %d parameters, but received %d",
-								functionName,
-								expectedParamCount,
-								actualParamCount
-							)
+							`Function {functionName} expected {expectedParamCount} parameters, but received {actualParamCount}`
 						)
 					end
 
@@ -437,7 +429,7 @@ function VirtualMachine.RunInstruction(self: VirtualMachine, i: YarnProgram.Inst
 			local loadedType = typeof(loadedValue)
 			assert(
 				loadedType == "string" or loadedType == "boolean" or loadedType == "number",
-				"Loaded variable " .. variableName .. "has an invalid type."
+				`Loaded variable {variableName} has an invalid type.`
 			)
 
 			self.Stack:push(loadedValue)
@@ -455,10 +447,9 @@ end
 --- the [PrepareForLinesHandler](Dialogue#OnPrepareForLines) in the parent Dialogue.
 --- @param nodeName string -- Name of the node to load
 function VirtualMachine.SetNode(self: VirtualMachine, nodeName: string)
-	local program =
-		assert(self.Dialogue.Program, "Cannot load node named " .. nodeName .. ": No nodes have been loaded.")
+	local program = assert(self.Dialogue.Program, `Cannot load node named {nodeName}: No nodes have been loaded.`)
 
-	local node = assert(program.nodes[nodeName], "No node named " .. nodeName .. " has been loaded.")
+	local node = assert(program.nodes[nodeName], `No node named {nodeName} has been loaded.`)
 
 	self:ResetState()
 	self.CurrentNode = node
@@ -507,7 +498,7 @@ function VirtualMachine.SetSelectedOption(self: VirtualMachine, selectedOptionID
 	-- we now know what number option was selected, push the
 	-- corresponding node name to the stack
 	local selection =
-		assert(self.CurrentOptions[selectedOptionID], tostring(selectedOptionID) .. " is not a valid option ID")
+		assert(self.CurrentOptions[selectedOptionID], `{tostring(selectedOptionID)} is not a valid option ID!`)
 	self.Stack:push(selection.destination)
 
 	-- we no longer need the options in the list

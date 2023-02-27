@@ -56,7 +56,7 @@ end
 --- @param name string -- The name of the node that needs to have a tracking variable created.
 --- @return string -- The new variable name
 function Library.GenerateUniqueVisitedVariableForNode(self: Library, name: string): string
-	return "$Yarn.Internal.Visiting." .. name
+	return `$Yarn.Internal.Visiting.{name}`
 end
 
 --- @prop functions { [string]: Function }
