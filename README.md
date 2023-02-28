@@ -1,4 +1,7 @@
-<img alt="Silk" width="256" height="256" src=".moonwave/static/img/silk-logo-light.png">
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset=".moonwave/static/img/silk-logo-light.png">
+  <img alt="Silk logo" width="256" height="256" src=".moonwave/static/img/silk-logo-dark.png">
+</picture>
 <!--moonwave-hide-before-this-line-->
 
 Silk
@@ -29,7 +32,7 @@ in a C# CLI tool as part of a Rojo workflow.
 - write beginner's guide and other docs
 - test suite
 - example projects with tutorials on docs site
-- automate CLI build & release for tools like Aftman
-- automate module build & release to Wally
+- ~~automate CLI build~~ & release for tools like Aftman
+- ~~automate module build~~ & release to Wally
 
 [Yarn ball icon from Flaticon](https://www.flaticon.com/free-icons/yarn-ball)

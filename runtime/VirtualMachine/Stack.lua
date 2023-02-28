@@ -10,6 +10,11 @@ local StackTypes = require(types:WaitForChild("Stack"))
 local Stack = {}
 Stack.__index = Stack
 
+--- @prop items { Operand }
+--- @within Stack
+---
+--- The internal array containing all items on the Stack.
+
 --- Create an empty Stack.
 --- @within Stack
 --- @tag constructor
@@ -23,12 +28,14 @@ function Stack.new(): StackTypes.Stack
 	return setmetatable(self :: any, Stack) :: StackTypes.Stack
 end
 
+--- @method clear
 --- Clear the Stack's values.
 --- @within Stack
 function Stack.clear(self: StackTypes.Stack)
 	table.clear(self.items)
 end
 
+--- @method peek
 --- Peek the value at the top of the Stack.
 --- @within Stack
 ---
@@ -37,6 +44,7 @@ function Stack.peek(self: StackTypes.Stack): YarnProgram.Operand
 	return self.items[#self.items]
 end
 
+--- @method pop
 --- Pop a value off the top of the Stack.
 --- @within Stack
 ---
@@ -49,11 +57,7 @@ function Stack.pop(self: StackTypes.Stack): YarnProgram.Operand
 	return value
 end
 
---- @prop items { Operand }
---- @within Stack
----
---- The internal array containing all items on the Stack.
-
+--- @method push
 --- Push a value to the top of the Stack.
 --- @within Stack
 ---

@@ -33,19 +33,23 @@ enabled = true
 includeReadme = true # disable once docs are finished
 
 [[home.features]]
-title = "Infinitely customizable"
-description = "Silk allows close control over how your dialogue is displayed to the end user."
+title = "Simple scripting."
+description = "Write your dialogue in a lightweight language with minimal coding syntax that’s designed for writers."
 
 [[home.features]]
-title = "Powered by Yarn Spinner"
-description = "Silk provides a method of running dialogue written in Yarn, an easy to learn language for writing dialogue in games."
+title = "Expressive control."
+description = "Define what your characters can do, and use commands to direct the scene."
+
+[[home.features]]
+title = "Incredible flexibility."
+description = "You control what to do with the lines and commands that Yarn Spinner sends you."
 
 [[classOrder]]
 classes = ["Silk"]
 
 [[classOrder]]
 section = "Classes"
-classes = ["Dialogue", "Library", "VirtualMachine"]
+classes = ["Dialogue", "Library", "Stack", "VirtualMachine"]
 
 [[classOrder]]
 section = "Datatypes"
@@ -53,4 +57,4 @@ classes = ["RawProgram", "YarnProgram"]
 
 [[classOrder]]
 section = "Libraries"
-classes = ["Base64", "Stack"]
+classes = ["Base64"]

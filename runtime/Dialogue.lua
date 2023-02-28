@@ -149,6 +149,7 @@ function Dialogue.new(
 	return new
 end
 
+--- @method AddProgram
 --- Loads the nodes from the specified Program, and adds them to the nodes already loaded.
 --- @within Dialogue
 ---
@@ -184,6 +185,7 @@ function Dialogue.AddProgram(self: DialogueTypes.Dialogue, program: YarnProgram.
 	self.Program = clone
 end
 
+--- @method Continue
 --- Starts or continues execution of the current Program.
 --- @within Dialogue
 ---
@@ -201,6 +203,7 @@ function Dialogue.Continue(self: DialogueTypes.Dialogue)
 	vm:Continue()
 end
 
+--- @method ExpandSubstitutions
 --- Replaces all substitution markers in a text with the given substitution list.
 --- @within Dialogue
 ---
@@ -222,6 +225,7 @@ function Dialogue.ExpandSubstitutions(self: DialogueTypes.Dialogue, text: string
 	return text
 end
 
+--- @method GetExecutionState
 --- Retrieves the execution state of the Dialogue.
 --- @within Dialogue
 ---
@@ -235,6 +239,7 @@ function Dialogue.GetExecutionState(
 	return (self.VirtualMachine :: VirtualMachineTypes.VirtualMachine).ExecutionState
 end
 
+--- @method GetNodeNames
 --- Returns a list of all loaded nodes in the program.
 --- @within Dialogue
 ---
@@ -251,6 +256,7 @@ function Dialogue.GetNodeNames(self: DialogueTypes.Dialogue): { string }
 	return ret
 end
 
+--- @method GetTagsForNode
 --- Returns the tags for the node `nodeName`.
 --- @within Dialogue
 ---
@@ -275,6 +281,7 @@ function Dialogue.GetTagsForNode(self: DialogueTypes.Dialogue, nodeName: string)
 	return nil
 end
 
+--- @method SetProgram
 --- Loads all nodes from the provided Program.
 --- @within Dialogue
 ---
@@ -285,6 +292,7 @@ function Dialogue.SetProgram(self: DialogueTypes.Dialogue, program: YarnProgram.
 	self.Program = program
 end
 
+--- @method SetSelectedOption
 --- Set the selected dialogue option.
 --- @within Dialogue
 ---
@@ -297,6 +305,7 @@ function Dialogue.SetSelectedOption(self: DialogueTypes.Dialogue, selectedOption
 	(self.VirtualMachine :: VirtualMachineTypes.VirtualMachine):SetSelectedOption(selectedOptionID)
 end
 
+--- @method Stop
 --- Immediately stops the `Dialogue`.
 --- @within Dialogue
 ---
@@ -307,6 +316,7 @@ function Dialogue.Stop(self: DialogueTypes.Dialogue)
 	vm.ExecutionState = "Stopped"
 end
 
+--- @method UnloadAll
 --- Unloads all nodes from the `Dialogue`.
 --- @within Dialogue
 function Dialogue.UnloadAll(self: DialogueTypes.Dialogue)

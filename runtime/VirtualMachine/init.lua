@@ -73,6 +73,7 @@ function VirtualMachine.new(dialogue: DialogueTypes.Dialogue): VirtualMachine
 	return setmetatable(self :: any, VirtualMachine) :: VirtualMachine
 end
 
+--- @method CheckCanContinue
 --- @within VirtualMachine
 ---
 --- Runs a series of tests to see if the VirtualMachine is in a state
@@ -92,6 +93,7 @@ function VirtualMachine.CheckCanContinue(self: VirtualMachine)
 	assert(dialogue.OnNodeComplete, "Cannot continue running dialogue. OnNodeComplete has not been set")
 end
 
+--- @method Continue
 --- Resumes execution.
 --- @within VirtualMachine
 ---
@@ -155,6 +157,7 @@ function VirtualMachine.Continue(self: VirtualMachine)
 	end
 end
 
+--- @method FindInstructionPointForLabel
 --- Looks up the instruction number for a named label in the current node.
 --- @within VirtualMachine
 --- @private
@@ -167,6 +170,7 @@ function VirtualMachine.FindInstructionPointForLabel(self: VirtualMachine, label
 	return assert(self.CurrentNode.labels[labelName], `Unknown label {labelName} in node {self.CurrentNode.name}`) + 1
 end
 
+--- @method GetLine
 --- Return a Line with the given string ID and expression count.
 --- @within VirtualMachine
 --- @private
@@ -197,6 +201,7 @@ function VirtualMachine.GetLine(self: VirtualMachine, stringKey: string, express
 	return line
 end
 
+--- @method ResetState
 --- Reset the VirtualMachine's internal state.
 --- @within VirtualMachine
 ---
@@ -209,6 +214,7 @@ function VirtualMachine.ResetState(self: VirtualMachine)
 	self.Stack:clear()
 end
 
+--- @method RunInstruction
 --- Executes a Yarn instruction.
 --- @within VirtualMachine
 --- @private
@@ -440,6 +446,7 @@ function VirtualMachine.RunInstruction(self: VirtualMachine, i: YarnProgram.Inst
 	end
 end
 
+--- @method SetNode
 --- Sets the node for the VirtualMachine to run.
 --- @within VirtualMachine
 ---
@@ -480,6 +487,7 @@ function VirtualMachine.SetNode(self: VirtualMachine, nodeName: string)
 	return true
 end
 
+--- @method SetSelectedOption
 --- Sets the selected option
 --- @within VirtualMachine
 --- @private

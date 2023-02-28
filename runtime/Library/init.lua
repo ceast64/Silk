@@ -18,6 +18,11 @@ type Library = LibraryTypes.Library
 type Function = LibraryTypes.Function
 type YarnFunction = LibraryTypes.YarnFunction
 
+--- @prop functions { [string]: Function }
+--- @within Library
+---
+--- The mapping table of function names to functions.
+
 --- Creates a new Library.
 --- @within Library
 --- @tag constructor
@@ -28,6 +33,7 @@ function Library.new(): Library
 	return setmetatable(self :: any, Library) :: Library
 end
 
+--- @method DeregisterFunction
 --- Removes a function from this Library.
 --- @within Library
 ---
@@ -38,6 +44,7 @@ function Library.DeregisterFunction(self: Library, name: string)
 	self.functions[name] = nil
 end
 
+--- @method FunctionExists
 --- Returns whether this Library contains a function named `name`.
 --- @within Library
 ---
@@ -47,6 +54,7 @@ function Library.FunctionExists(self: Library, name: string): boolean
 	return self.functions[name] ~= nil
 end
 
+--- @method GenerateUniqueVisitedVariableForNode
 --- Generates a unique tracking variable name.
 --- @within Library
 ---
@@ -59,11 +67,7 @@ function Library.GenerateUniqueVisitedVariableForNode(self: Library, name: strin
 	return `$Yarn.Internal.Visiting.{name}`
 end
 
---- @prop functions { [string]: Function }
---- @within Library
----
---- The mapping table of function names to functions.
-
+--- @method GetFunction
 --- Returns the [Function](Library#Function) with a given name.
 --- @within Library
 ---
@@ -73,6 +77,7 @@ function Library.GetFunction(self: Library, name: string): Function
 	return assert(self.functions[name], "Function " .. name .. " is not present in the library.")
 end
 
+--- @method ImportLibrary
 --- Loads functions from another Library.
 --- @within Library
 ---
@@ -86,6 +91,7 @@ function Library.ImportLibrary(self: Library, other: Library)
 	end
 end
 
+--- @method RegisterFunction
 --- Registers a new function that returns a value, which can be called from a Yarn program.
 --- @within Library
 ---
@@ -101,6 +107,7 @@ function Library.RegisterFunction(self: Library, name: string, func: YarnFunctio
 	}
 end
 
+--- @method RegisterStandardLibrary
 --- Registers the standard library of functions to this Library.
 --- @within Library
 ---
