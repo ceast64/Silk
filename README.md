@@ -25,8 +25,8 @@ in a C# CLI tool as part of a Rojo workflow.
 - ~~debug info callbacks~~
 - ~~move Dialogue.Library to its own class~~
 - ~~implement functions required for expressions (Number.Add, Number.EqualTo, etc.)~~
-- implement default commands
-- command parser
+- ~~implement default commands~~
+- ~~command parser~~
 - ~~refactor code, namely typedefs, to improve ease of use~~
 - ~~clean up API docs~~
 - write beginner's guide and other docs

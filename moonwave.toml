@@ -49,7 +49,7 @@ classes = ["Silk"]
 
 [[classOrder]]
 section = "Classes"
-classes = ["Dialogue", "Library", "Stack", "VirtualMachine"]
+classes = ["CommandRegistry", "Dialogue", "Library", "Stack", "VirtualMachine"]
 
 [[classOrder]]
 section = "Datatypes"

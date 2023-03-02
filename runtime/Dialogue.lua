@@ -120,12 +120,12 @@ local Library = require(script.Parent:WaitForChild("Library"))
 ---
 --- @param source YarnProgram? -- Source program
 --- @param startNode string? -- Starting node name
---- @param registerStandardLibrary boolean? -- Whether or not to register the standard functions for value comparison and arithmetic, defaults to true
+--- @param noStandardLibrary boolean? -- Skip registering the standard library functions, only useful for debugging
 --- @return Dialogue -- New dialogue object
 function Dialogue.new(
 	source: YarnProgram.YarnProgram?,
 	startNode: string?,
-	registerStandardLibrary: boolean?
+	noStandardLibrary: boolean?
 ): DialogueTypes.Dialogue
 	local self = {
 		DefaultStartNodeName = startNode,
@@ -140,7 +140,7 @@ function Dialogue.new(
 	self.VirtualMachine = VirtualMachine.new(new)
 	local library = Library.new()
 
-	if registerStandardLibrary then
+	if noStandardLibrary ~= true then
 		library:RegisterStandardLibrary()
 	end
 

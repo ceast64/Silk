@@ -8,6 +8,7 @@ local Silk = {}
 local Dialogue = require(script:WaitForChild("Dialogue"))
 local VirtualMachine = require(script:WaitForChild("VirtualMachine"))
 local Library = require(script:WaitForChild("Library"))
+local CommandRegistry = require(script:WaitForChild("CommandRegistry"))
 
 local lib = script:WaitForChild("lib")
 local Base64 = require(lib:WaitForChild("Base64"))
@@ -62,6 +63,14 @@ export type YarnFunction = LibraryTypes.YarnFunction
 ---
 --- Base64 library used by generated modules.
 Silk.Base64 = Base64
+
+--- @prop CommandRegistry CommandRegistry
+--- @within Silk
+--- @tag libraries
+---
+--- Acts as an organizer for commands and executes command strings
+--- from [`Dialogue.OnCommand`](Dialogue#OnCommand)
+Silk.CommandRegistry = CommandRegistry
 
 --- @prop Dialogue Dialogue
 --- @within Silk
