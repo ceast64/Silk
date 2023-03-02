@@ -82,7 +82,78 @@ end
 
 local std = {} :: { [string]: LibraryTypes.YarnFunction }
 
--- mapping of each function
+-- normal functions
+function std.visited(node_name: Operand?): Operand?
+	-- TODO
+	error("")
+	return false
+end
+
+function std.visited_count(node_name: Operand?): Operand?
+	-- TODO
+	return false
+end
+
+local random = Random.new()
+
+function std.random(): number
+	return random:NextNumber()
+end
+
+function std.random_range(a, b): number
+	assert(a and type(a) == "number", `expected number for argument a, got {a}`)
+	assert(b and type(b) == "number", `expected number for argument b, got {b}`)
+	return random:NextInteger(a :: number, b :: number)
+end
+
+function std.dice(sides): number
+	assert(sides and type(sides) == "number", `expected number for argument sides, got {sides}`)
+	return random:NextInteger(1, sides :: number)
+end
+
+function std.round(n): number
+	assert(n and type(n) == "number", `expected number for argument n, got {n}`)
+	return math.round(n)
+end
+
+function std.round_places(n, places): number
+	assert(n and type(n) == "number", `expected number for argument n, got {n}`)
+	assert(places and type(places) == "number", `expected number for argument places, got {places}`)
+	local mult = 10 ^ places :: number
+	return math.floor(n :: number * mult + 0.5) / mult
+end
+
+function std.floor(n): number
+	assert(n and type(n) == "number", `expected number for argument n, got {n}`)
+	return math.floor(n)
+end
+
+function std.ceil(n): number
+	assert(n and type(n) == "number", `expected number for argument n, got {n}`)
+	return math.ceil(n)
+end
+
+function std.inc(n): number
+	assert(n and type(n) == "number", `expected number for argument n, got {n}`)
+	return if math.ceil(n) == n then n + 1 else math.ceil(n)
+end
+
+function std.dec(n): number
+	assert(n and type(n) == "number", `expected number for argument n, got {n}`)
+	return if math.floor(n) == n then n - 1 else math.floor(n)
+end
+
+function std.decimal(n): number
+	assert(n and type(n) == "number", `expected number for argument n, got {n}`)
+	return n % 1
+end
+
+function std.int(n): number
+	assert(n and type(n) == "number", `expected number for argument n, got {n}`)
+	return n - (n % 1)
+end
+
+-- mapping of each function for equations
 local methods = {
 	["Number"] = {
 		["EqualTo"] = equalTo,
@@ -121,4 +192,5 @@ for root, children in methods do
 	end
 end
 
+table.freeze(std)
 return std
